@@ -18,6 +18,5 @@ export class StateService {
       },
     })
       .then((res: Response) => res.json())
-      .then((jres) => jres.list)
   }
 }

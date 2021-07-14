@@ -1,0 +1,12 @@
+.MuiTextField-root input {
+    padding-top: 9px;
+    padding-bottom: 9px; 
+  }
+  
+  .MuiTextField-root label {
+    top: -4px;
+  }
+  
+  .MuiTextField-root label[data-shrink='true'] {
+    top: 0;
+  }

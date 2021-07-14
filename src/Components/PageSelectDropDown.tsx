@@ -4,15 +4,16 @@ import {
   InputLabel,
   MenuItem,
   makeStyles,
-  TextField
+  TextField,
+  Typography
 } from "@material-ui/core";
 import { stateStoreContext } from "../StateStore";
 import { useContext, useState, createRef, forwardRef } from "react";
 import { runInAction } from "mobx";
-import { setConstantValue } from "typescript";
+import {Link } from "react-router-dom";
 
 
-export function DropDown() {
+export function PageSelectDropDown() {
   const stateStore = useContext(stateStoreContext);
   const [value, setValue] = useState('zones');
 
@@ -22,21 +23,34 @@ export function DropDown() {
     runInAction(() => (stateStore.reportType = e.target.value));
   }
 
+ 
+  const styles = {
+    resize: {
+      fontSize: 20
+    }
+  }
+
   return (
-    <FormControl required>
+    <div>
+    <FormControl required margin="normal">
       <Select
-        defaultValue={''}
+        style={{height: "35px", backgroundColor: "white", marginLeft: "-35px" }}
+        displayEmpty
+        renderValue={() => "publishers"}
+        defaultValue={'publishers'}
         onChange={handleChange}
-      
-        // value={stateStore.reportType}
         variant="outlined"
-        style={{ width: "145px", height: "55px" }}
+        
       >
-        <MenuItem value={'zones'}>zones</MenuItem>
-        <MenuItem value={'publishers'}>publishers</MenuItem>
-        <MenuItem value={'remotefeeds'}>remote feeds</MenuItem>
+        <Link to="/publishers">
+        <MenuItem value={'publishers'} style={{fontSize: 15}}>publishers</MenuItem>
+        </Link>
+        <Link to="/remotefeeds">
+        <MenuItem value={'remotefeeds'} style={{fontSize: 15}}>remote feeds</MenuItem>
+        </Link>
       </Select>
     </FormControl>
+    </div>
   )
 }
 

@@ -8,15 +8,15 @@ import { observer } from "mobx-react-lite";
 export const GoButton = observer<any, any>(() => {
   const stateStore = useContext(stateStoreContext);
   function HandleClick(e: any) {
-    runInAction(() => (stateStore.clickedButton = !stateStore.clickedButton));
+    runInAction(() => (stateStore.clickedButton = true));
   }
 
   return (
     <Button
       onClick={HandleClick}
-      style={{ width: "55px", height: "55px" }}
+      style={{ width: "56px", height: "55px" }}
       variant="contained"
-      color="primary"
+      color="secondary"
     >
       Go
     </Button>

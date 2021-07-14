@@ -4,11 +4,8 @@ import "./index.css";
 import reportWebVitals from "./reportWebVitals";
 import { Title } from "./Components/Title";
 import { Home } from "./Home";
-import { DropDown } from "./Components/DropDown";
-import { BrowserRouter } from 'react-router-dom';
-import { App } from './App';
-import { ZonesDropDown } from './Components/ZonesDropdown';
 import { NavBar } from "./Components/NavBar";
+import { ZoneFeedData } from "./Components/ZoneFeedData";
 
 
 ReactDOM.render(
