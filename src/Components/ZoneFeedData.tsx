@@ -56,8 +56,7 @@ export const ZoneFeedData = observer<any, any>(() => {
       .then((info: TableObject[]) => (stateStore.tableArray = info))
       .then(() => console.log(columns))
       .then(() => setReady(true));
-
-  }, []);
+  });
 
   if (ready == false) {
     return <div> Loading </div>;
