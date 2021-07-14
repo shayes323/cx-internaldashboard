@@ -53,7 +53,7 @@ class StateStore {
   public Page = Page.PublisherPage;
 
   constructor() {
-    makeAutoObservable(this, { tableArray: observable.ref });
+    makeAutoObservable(this);
   }
 
 }

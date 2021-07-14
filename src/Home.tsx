@@ -60,7 +60,7 @@ export const Home: any = observer<any, any>(() => {
             </Route>
             <Route exact path="/publishers">
               {/* <DailyImpressionsChart /> */}
-              {/* <ZoneFeedData /> */}
+              <ZoneFeedData />
             </Route>
             <Route exact path="/RemoteFeeds">
               <NewPage />

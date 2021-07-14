@@ -11,6 +11,7 @@ import { stateStoreContext } from "../StateStore";
 import { TableObject } from "../TableObject";
 import { CircularProgress } from "@material-ui/core";
 import { InfoRounded } from "@material-ui/icons";
+import { toJS } from "mobx";
 
 const columns: GridColDef[] = [
   { field: "zoneFeed", headerName: "Zone/Feed", width: 150 },
@@ -59,13 +60,13 @@ export const ZoneFeedData = observer<any, any>(() => {
   }, []);
 
   if (ready == false) {
-    return <div> fuck</div>;
+    return <div> Loading </div>;
   }
   return (
     <div>
       <DataGrid
         autoHeight
-        rows={stateStore.tableArray as GridRowModel[]}
+        rows={toJS(stateStore.tableArray) as GridRowModel[]}
         columns={columns}
       />
     </div>
