@@ -11,9 +11,14 @@ import {
   BarChart,
   Bar,
 } from "recharts";
-import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch,
+  Redirect,
+} from "react-router-dom";
 
-import { createMuiTheme, ThemeProvider } from "@material-ui/core";
+import { Box, createMuiTheme, ThemeProvider } from "@material-ui/core";
 import { orange, purple } from "@material-ui/core/colors";
 import { stateStoreContext } from "./StateStore";
 import { observer } from "mobx-react-lite";
@@ -21,7 +26,7 @@ import { StateService } from "./StateService";
 import { Link } from "react-router-dom";
 import { Charts } from "./Components/Charts";
 import { GoButton } from "./Components/GoButton";
-import { NavBar } from "./Components/NavBar";
+import { PublishersNavBar } from "./Components/PublishersNavBar";
 import { NewPage } from "./NewPage";
 import { spacing } from "@material-ui/system";
 import { EstimatedRevenue } from "./Components/EstimatedRevenue";
@@ -29,13 +34,16 @@ import { Requests } from "./Components/Requests";
 import { Impressions } from "./Components/Impressions";
 import { Ecpm } from "./Components/Ecpm";
 import { FillRate } from "./Components/FillRate";
-import { SpacedPanels } from "./Organization/SpacedPanels";
-import { DailyImpressionsChart } from "./Components/DailyImpressionsChart";
+import { PublishersSpacedPanels } from "./Organization/PublishersSpacedPanels";
+import { PublishersDailyImpressionsChart } from "./Components/PublishersDailyImpressionsChart";
 import { ZoneFeedData } from "./Components/ZoneFeedData";
+import { PublishersChartsPlacement } from "./Organization/PublishersChartsPlacement";
+import { RemoteFeedsNavBar } from "./Components/RemoteFeedsNavBar";
+import { RFSpacedPanels } from "./Organization/RFSpacedPanels";
+import { RFDailyChart } from "./Components/RFDailyChart";
+import { RFChartsPlacement } from "./Organization/RFChartsPlacement";
 
 export const Home: any = observer<any, any>(() => {
-  
-
   // useEffect(() => {
   //   new StateService(url)
   //     .Get()
@@ -46,29 +54,42 @@ export const Home: any = observer<any, any>(() => {
   //   console.log(stateStore.responseData);
   // });
 
+  
+
+ 
+
   return (
-    <div style={{backgroundColor: "#F2F3F4"}}>
+    <Box style={{ height: '100vh', minHeight: "100vh", backgroundColor: "#F2F3F4"}}>
+    <div>
       <Router>
-        <div className="PageConstants">
-          <NavBar />
-          <SpacedPanels />
-        </div>
-        <div className="Content">
+        {/* <div className="PageConstants">
+          <RemoteFeedsNavBar />
+          <RFSpacedPanels />
+        </div> */}
+            <div className="Content">
           <Switch>
             <Route exact path="/">
               <Redirect exact from="/" to="/publishers" />
             </Route>
             <Route exact path="/publishers">
-              {/* <DailyImpressionsChart /> */}
-              <ZoneFeedData />
+              <div style={{backgroundColor: "#F2F3F4"}}>
+                <PublishersNavBar />
+                <PublishersSpacedPanels />
+              </div>
+              <PublishersChartsPlacement />
             </Route>
             <Route exact path="/RemoteFeeds">
-              <NewPage />
+              <div style={{backgroundColor: "#F2F3F4"}}>
+                <RemoteFeedsNavBar />
+                <RFSpacedPanels />
+              </div>
+              <RFChartsPlacement />
             </Route>
           </Switch>
         </div>
       </Router>
-      </div>
+    </div>
+    </Box>
   );
 });
 

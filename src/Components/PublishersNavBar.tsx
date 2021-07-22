@@ -8,22 +8,22 @@ import {
   Grid,
   Paper,
   ThemeProvider,
+  Divider,
 } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import { GoButton } from "./GoButton";
-import { StartTextField, EndTextField } from "./TextFields";
+import { PubStartTextField, PubEndTextField } from "./PubTextFields";
 import { PublishersDropDown } from "./PublishersDropdown";
 import { PageSelectDropDown } from "./PageSelectDropDown";
 import MenuIcon from "@material-ui/icons/Menu";
 import { MenuButton } from "./MenuButton";
 import { theme } from "./Theme"
 
-export function NavBar() {
+export function PublishersNavBar() {
   
 
   return (
     <ThemeProvider theme={theme}>
-    <AppBar variant="outlined" elevation={0} position="static" color="primary">
       <div>
         <Typography>CX Insights</Typography>
       </div>
@@ -48,20 +48,22 @@ export function NavBar() {
             <PublishersDropDown />
           </Grid>
           <Grid item xs>
-            <Box style={{marginLeft:"47px"}}>Start Date: </Box>
+            <Box style={{marginLeft:"44px"}}>Start Date: </Box>
           </Grid>
           <Grid item xs>
-           <StartTextField />
+           <PubStartTextField />
            </Grid>
            <Grid item xs>
             <Box style={{marginLeft:"50px"}}>End Date: </Box>
           </Grid>
           <Grid item xs>
-            <EndTextField />
+            <PubEndTextField />
           </Grid>
         </Grid>
-      </Box>
-    </AppBar>
+        <Divider style={{marginLeft: "20px", marginRight: "20px", height: "1.5px"}} />
+    
+    </Box>
+
     </ThemeProvider>
   );
 }

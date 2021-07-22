@@ -1,8 +1,4 @@
-import { observable } from "mobx";
-
-
-
-export class TableObject {
+export class PublisherTableObject {
     public id: number;
     public zoneFeed: string;
     public revenue: number;
@@ -20,15 +16,4 @@ export class TableObject {
         this.fillRate = fillRate;
         this.eCpm = eCpm;
     }
-
-    add(id: number, zoneFeed: string, revenue: number, requests: number, impressions: number, fillRate: number, eCpm: number) {
-        this.id = id;
-        this.zoneFeed = zoneFeed;
-        this.revenue = revenue;
-        this.requests = requests;
-        this.impressions = impressions;
-        this.fillRate = fillRate;
-        this.eCpm = eCpm;
-    }
-
 }

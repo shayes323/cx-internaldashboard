@@ -21,7 +21,7 @@ var mm = String(today.getMonth() + 1).padStart(2, "0");
 var yyyy = today.getFullYear();
 today = yyyy + "-" + mm + "-" + dd;
 
-export function StartTextField() {
+export function PubStartTextField() {
   const stateStore = useContext(stateStoreContext);
 
   function HandleStartChange(e: any) {
@@ -44,7 +44,7 @@ export function StartTextField() {
   );
 }
 
-export function EndTextField() {
+export function PubEndTextField() {
   const stateStore = useContext(stateStoreContext);
 
   function HandleEndChange(e: any) {

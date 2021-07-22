@@ -7,7 +7,7 @@ import {
 } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
 import { useContext, useState } from "react";
-import { Page, stateStoreContext } from "../StateStore";
+import { stateStoreContext } from "../StateStore";
 import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom";
 
 export function MenuButton() {
@@ -21,12 +21,12 @@ export function MenuButton() {
   };
 
   const handlePublisherClick = () => {
-    stateStore.Page = Page.PublisherPage;
+    // stateStore.Page = Page.PublisherPage;
     setAnchorEl(null);
   };
 
   const handleRemoteFeedClick = () => {
-    stateStore.Page = Page.RemoteFeedPage;
+    // stateStore.Page = Page.RemoteFeedPage;
     setAnchorEl(null);
   };
 

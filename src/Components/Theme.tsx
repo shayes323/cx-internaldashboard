@@ -1,16 +1,14 @@
-import { createMuiTheme, Typography } from "@material-ui/core";
+import { createTheme, Typography } from "@material-ui/core";
 
-export const theme = createMuiTheme({
+export const theme = createTheme({
   palette: {
     primary: {
       main: "#F2F3F4",
     },
   },
   typography: {
-    fontFamily: "Montserrat",
-    fontWeightLight: 400,
-    fontWeightRegular: 500,
-    fontWeightMedium: 600,
-    fontWeightBold: 700,
+    subtitle1: { fontFamily: "Montserrat", fontWeight: 1000, fontSize: 20 },
+    subtitle2: { fontFamily: "Montserrat", fontWeight: 900, fontSize: 12},
+    body1: { fontFamily: "Montserrat", fontWeight: 1200, fontSize: 25},
   },
 });

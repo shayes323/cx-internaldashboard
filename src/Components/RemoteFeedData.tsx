@@ -31,6 +31,7 @@ import Remove from '@material-ui/icons/Remove';
 import SaveAlt from '@material-ui/icons/SaveAlt';
 import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
+import { RFTableObject } from "./RFTableObject";
 
 const tableIcons: any = {
     Add: forwardRef((props: any, ref: any) => <AddBox {...props} ref={ref} />),
@@ -63,25 +64,25 @@ const columns: any[] = [
   { field: "eCpm", headerName: "Ecpm", width: 120 },
 ];
 
-export const ZoneFeedData = observer<any, any>(() => {
+export const RemoteFeedData = observer<any, any>(() => {
   const stateStore = useContext(stateStoreContext);
   const [ready, setReady] = useState<boolean>(false);
 
   const tableUrl =
-    stateStore.selectedPublisher === ""
-      ? "https://dev-app-api.catapultx.com/api/v1/reports/zones/all/" +
+    stateStore.selectedRemotefeed === ""
+      ? "https://dev-app-api.catapultx.com/api/v1/reports/remotefeeds/all/" +
         stateStore.start +
         "/" +
         stateStore.end +
-        "/rtb_pub_impressions,rtb_pub_requests,rtb_pub_revenue,rtb_pub_ecpm"
-      : "https://dev-app-api.catapultx.com/api/v1/reports/zones/" +
+        "/rtb_rem_gross,rtb_rem_imp_requests,rtb_rem_imp_coverage,rtb_rem_top_bids_price_avg,rtb_rem_imp_coverage"
+      : "https://dev-app-api.catapultx.com/api/v1/reports/remotefeeds/" +
         stateStore.start +
         "/" +
         stateStore.end +
         "/" +
-        "publisher=" +
-        stateStore.selectedPublisher +
-        "/rtb_pub_impressions,rtb_pub_requests,rtb_pub_revenue,rtb_pub_ecpm";
+        "remotefeed=" +
+        stateStore.selectedRemotefeed +
+        "/rtb_rem_gross,rtb_rem_imp_requests,rtb_rem_imp_coverage,rtb_rem_top_bids_price_avg,rtb_rem_imp_coverage"
 
   useEffect(() => {
     console.log("effect used");
@@ -91,19 +92,19 @@ export const ZoneFeedData = observer<any, any>(() => {
       .then((data: any) =>
         data.map(
           (data: any, key: number) =>
-            new PublisherTableObject(
+            new RFTableObject(
               key,
-              data.zone,
-              data.rtb_pub_revenue,
-              data.rtb_pub_requests,
-              data.rtb_pub_impressions,
-              data.rtb_pub_impressions / (data.rtb_pub_requests / 2),
-              data.rtb_pub_ecpm
+              data.remotefeed,
+              data.rtb_rem_gross,
+              data.rtb_rem_imp_requests,
+              data.rtb_rem_imp_coverage,
+              data.rtb_rem_top_bids_price_avg,
+              data.rtb_rem_imp_coverage, 
             )
         )
       ) //array then convert to object
-      .then((info: PublisherTableObject[]) => (stateStore.publisherTableArray = info))
-      .then(() => console.log(columns))
+      .then((info: RFTableObject[]) => (stateStore.rfTableArray = info))
+      .then(() => console.log(stateStore.rfTableArray))
       .then(() => setReady(true));
   });
 
@@ -117,21 +118,21 @@ export const ZoneFeedData = observer<any, any>(() => {
       <Paper>
         <MaterialTable
           icons={tableIcons}
-          title="Zone/Feed Data"
+          title="Remote Feed Data"
           options={{
             search: true,
             paging: false,
             maxBodyHeight: 300
           }}
           columns={[
-            { field: "zoneFeed", title: "Zone/Feed", width: 170},
-            { field: "revenue", title: "Revenue", width: 140 },
-            { field: "requests", title: "Requests", width: 140 },
-            { field: "impressions", title: "Impressions", width: 155},
-            { field: "fillRate", title: "Fill Rate", width: 130 },
-            { field: "eCpm", title: "Ecpm", width: 120 },
+            { field: "remoteFeed", title: "Remote Feed", width: 170},
+            { field: "grossRevenue", title: "Gross Revenue", width: 140 },
+            { field: "requestedBids", title: "Requested Bids", width: 140 },
+            { field: "bids", title: "Bids", width: 155},
+            { field: "avgBidEcpm", title: "Average Bid ECPM", width: 130 },
+            { field: "coverage", title: "Coverage", width: 120 },
           ]}
-          data={toJS(stateStore.publisherTableArray)}
+          data={toJS(stateStore.rfTableArray)}
 
         />
       </Paper>
@@ -139,6 +140,3 @@ export const ZoneFeedData = observer<any, any>(() => {
     </div>
   );
 });
-
-
-

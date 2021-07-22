@@ -1,8 +1,9 @@
-import { Paper, Typography } from "@material-ui/core";
+import { Paper, ThemeProvider, Typography } from "@material-ui/core";
 import { observer } from "mobx-react-lite";
 import react, { useContext, useEffect } from "react";
 import { StateService } from "../StateService";
 import { stateStoreContext } from "../StateStore";
+import { theme } from "./Theme";
 
 export const Requests = observer<any, any>(() => {
   const stateStore = useContext(stateStoreContext);
@@ -13,13 +14,19 @@ export const Requests = observer<any, any>(() => {
   var yyyy = today.getFullYear();
   today = yyyy + "-" + mm + "-" + dd;
 
-  var requestsUrl: string =
+  var requestsUrl: string = stateStore.selectedPublisher === "" ?
     "https://dev-app-api.catapultx.com/api/v1/reports/publishers/all/" +
     stateStore.start +
     "/" +
     stateStore.end +
     "/" +
-    "rtb_pub_requests";
+    "rtb_pub_requests" : "https://dev-app-api.catapultx.com/api/v1/reports/publishers/" +
+    stateStore.start +
+    "/" +
+    stateStore.end +
+    "/publisher=" +
+    stateStore.selectedPublisher +
+    "/rtb_pub_requests";
 
   useEffect(() => {
     new StateService(requestsUrl)
@@ -30,6 +37,8 @@ export const Requests = observer<any, any>(() => {
   });
 
   return (
-    <Paper style={{ height: "100%" }}>Requests:<div style={{textAlign: "center"}}>{stateStore.requests}</div></Paper>
+    <ThemeProvider theme={theme}>
+    <Paper style={{ height: "100%" }}><Typography variant="subtitle1">REQUESTS:</Typography><div style={{textAlign: "center"}}><Typography variant="subtitle2">{stateStore.requests}</Typography></div></Paper>
+    </ThemeProvider>
   );
 });

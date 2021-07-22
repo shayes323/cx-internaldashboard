@@ -4,8 +4,9 @@ import "./index.css";
 import reportWebVitals from "./reportWebVitals";
 import { Title } from "./Components/Title";
 import { Home } from "./Home";
-import { NavBar } from "./Components/NavBar";
 import { ZoneFeedData } from "./Components/ZoneFeedData";
+import { RemoteFeedsDropDown } from "./Components/RemoteFeedsDropdown";
+import { RemoteFeedsNavBar } from "./Components/RemoteFeedsNavBar";
 
 
 ReactDOM.render(

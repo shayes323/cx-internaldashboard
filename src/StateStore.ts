@@ -1,18 +1,18 @@
 import { makeAutoObservable, observable, autorun } from "mobx";
 import { createContext } from "react";
-import { Collection, EnumDeclaration } from "typescript";
+import { Collection, EnumDeclaration, EnumType } from "typescript";
 import { Day } from "./Day";
 import { Home } from "./Home";
-import { TableObject } from "./TableObject";
+import { PublisherTableObject } from "./PublisherTableObject";
 
 class StateStore {
   public start: string = Day.getToday();
 
   public end: string = Day.getToday();
-  
+
   public clickedButton: boolean = false;
 
-  public reportType = "";
+  public reportType: any ="";
 
   public responseData: any[] = [];
 
@@ -29,11 +29,13 @@ class StateStore {
 
   public publishersList: any[] = [];
 
+  public publishersMap: Map<string, number> = new Map();
+
   public fillRateData: any[] = [];
 
   public fillRate: any = "";
 
-  public estimatedRevenue: any[] = [];
+  public estimatedRevenue: any;
 
   public requests: any = "";
 
@@ -41,16 +43,45 @@ class StateStore {
 
   public ecpm: any = "";
 
-  public selectedPublisher: any;
+  public selectedPublisher: string|number = "";
 
-  public tableArray: TableObject[];
+  public publisherTableArray: PublisherTableObject[];
 
   public tableUrl: string;
 
-  public tableObject: TableObject;
+  public publisherTableObject: PublisherTableObject;
 
+  public winRate: any = "";
 
-  public Page = Page.PublisherPage;
+  public ctr: any = "";
+
+  public rfGrossRevenue: any = "";
+
+  public rfRequestedBids: any = "";
+
+  public rfBids: any = "";
+
+  public rfAvgBidEcpm: any = "";
+
+  public rfCoverage: any = "";
+
+  public remotefeedsMap: Map<string, number> = new Map();
+  public remotefeedsList: any[] = [];
+  public selectedRemotefeed: any = "";
+
+  public chartX: any = "";
+  public chartPrimaryY: any = "";
+  public chartSecondaryY: any = "";
+
+  //RFDailyChart
+  public rfResponseDates: any[] = [];
+  public rfResponseGrossRev: any = "";
+  public rfResponseRequestedBids: any = "";
+  public rfResponseBids: any = "";
+
+  public rfTableArray: any[] = [];
+
+  public page: any = "publishers"
 
   constructor() {
     makeAutoObservable(this);
@@ -58,9 +89,5 @@ class StateStore {
 
 }
 
-export enum Page {
-  PublisherPage,
-  RemoteFeedPage,
-}
 
 export const stateStoreContext = createContext(new StateStore());
