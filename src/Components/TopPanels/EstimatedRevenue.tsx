@@ -1,10 +1,10 @@
 import { Paper, ThemeProvider, Typography } from "@material-ui/core";
 import { observer } from "mobx-react-lite";
 import react, { useContext, useEffect } from "react";
-import { StateService } from "../StateService";
-import { stateStoreContext } from "../StateStore";
-import { Num } from "./Num";
-import { theme } from "./Theme";
+import { StateService } from "../../StateService";
+import { stateStoreContext } from "../../StateStore";
+import { Utils } from "../../Utils";
+import { theme } from "../Theme";
 
 export const EstimatedRevenue = observer<any, any>(() => {
   const stateStore = useContext(stateStoreContext);
@@ -32,5 +32,5 @@ export const EstimatedRevenue = observer<any, any>(() => {
       .then((data) => (stateStore.estimatedRevenue = data))
   });
 
-  return <Paper style={{ height: "100%" }}><ThemeProvider theme={theme}><Typography variant="subtitle1">ESTIMATED REVENUE:</Typography><div style={{textAlign: "center"}}><Typography variant="body1">{Num.RoundNum(stateStore.estimatedRevenue)}</Typography></div></ThemeProvider></Paper>
+  return <Paper style={{ height: "100%" }}><ThemeProvider theme={theme}><Typography variant="subtitle1">ESTIMATED REVENUE:</Typography><div style={{textAlign: "center"}}><Typography variant="body1">{Utils.RoundNum(stateStore.estimatedRevenue)}</Typography></div></ThemeProvider></Paper>
 });

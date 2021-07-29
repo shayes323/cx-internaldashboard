@@ -1,5 +1,5 @@
 import { Grid } from "@material-ui/core";
-import { PublishersDailyImpressionsChart } from "../Components/PublishersDailyImpressionsChart";
+import { PubDailyChart } from "../Components/PubDailyChart";
 import { DeviceBreakdown } from "../Components/DeviceBreakdown";
 import { ZoneFeedData } from "../Components/ZoneFeedData";
 
@@ -13,7 +13,7 @@ export function PublishersChartsPlacement() {
           style={{ display: "flexInline", height: 10 }}
         >
           <Grid item xs={12}>
-            <PublishersDailyImpressionsChart />
+            <PubDailyChart />
           </Grid>
           <Grid item xs={7}>
             <ZoneFeedData />

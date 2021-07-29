@@ -1,14 +1,14 @@
 import { Paper, Typography } from "@material-ui/core";
 import { observer } from "mobx-react-lite";
 import react, { useContext, useEffect } from "react";
-import { StateService } from "../StateService";
-import { stateStoreContext } from "../StateStore";
+import { StateService } from "../../StateService";
+import { stateStoreContext } from "../../StateStore";
 
-export const RFAvgBidEcpm = observer<any, any>(() => {
+export const AvgBidEcpm = observer<any, any>(() => {
   const stateStore = useContext(stateStoreContext);
 
 
-  const rfAvgBidEcpmUrl: string = stateStore.selectedRemotefeed === "" ?
+  const avgBidEcpmUrl: string = stateStore.selectedRemotefeed === "" ?
     "https://dev-app-api.catapultx.com/api/v1/reports/remotefeeds/all/" +
     stateStore.start +
     "/" +
@@ -23,7 +23,7 @@ export const RFAvgBidEcpm = observer<any, any>(() => {
     "/rtb_rem_top_bids_price_avg";
 
   useEffect(() => {
-    new StateService(rfAvgBidEcpmUrl)
+    new StateService(avgBidEcpmUrl)
       .Get()
       .then((jres) => jres.total)
       .then((total) => total.rtb_rem_top_bids_price_avg)

@@ -14,14 +14,10 @@ import { runInAction } from "mobx";
 import { StateService } from "../StateService";
 import { useEffect } from "react";
 import "./TextFields.css";
+import { Utils } from "../Utils";
 
-var today: any = new Date();
-var dd = String(today.getDate()).padStart(2, "0");
-var mm = String(today.getMonth() + 1).padStart(2, "0");
-var yyyy = today.getFullYear();
-today = yyyy + "-" + mm + "-" + dd;
 
-export function PubStartTextField() {
+export function StartDateField() {
   const stateStore = useContext(stateStoreContext);
 
   function HandleStartChange(e: any) {
@@ -31,7 +27,7 @@ export function PubStartTextField() {
   return (
     <TextField
       className="TextFields"
-      defaultValue={today}
+      defaultValue={Utils.GetToday()}
       size="small"
       margin="normal"
       onChange={HandleStartChange}
@@ -44,7 +40,7 @@ export function PubStartTextField() {
   );
 }
 
-export function PubEndTextField() {
+export function EndDateField() {
   const stateStore = useContext(stateStoreContext);
 
   function HandleEndChange(e: any) {
@@ -54,7 +50,7 @@ export function PubEndTextField() {
   return (
     <TextField
       className="TextFields"
-      defaultValue={today}
+      defaultValue={Utils.GetToday()}
       size="small"
       onChange={HandleEndChange}
       id="endDate"

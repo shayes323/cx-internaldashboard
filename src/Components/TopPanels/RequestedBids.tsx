@@ -1,10 +1,10 @@
 import { Paper, Typography } from "@material-ui/core";
 import { observer } from "mobx-react-lite";
 import react, { useContext, useEffect } from "react";
-import { StateService } from "../StateService";
-import { stateStoreContext } from "../StateStore";
+import { StateService } from "../../StateService";
+import { stateStoreContext } from "../../StateStore";
 
-export const RFRequestedBids = observer<any, any>(() => {
+export const RequestedBids = observer<any, any>(() => {
   const stateStore = useContext(stateStoreContext);
 
 

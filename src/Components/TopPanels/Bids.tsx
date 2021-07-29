@@ -1,14 +1,14 @@
 import { Paper, Typography } from "@material-ui/core";
 import { observer } from "mobx-react-lite";
 import react, { useContext, useEffect } from "react";
-import { StateService } from "../StateService";
-import { stateStoreContext } from "../StateStore";
+import { StateService } from "../../StateService";
+import { stateStoreContext } from "../../StateStore";
 
-export const RFCoverage = observer<any, any>(() => {
+export const Bids = observer<any, any>(() => {
   const stateStore = useContext(stateStoreContext);
 
 
-  const rfCoverageUrl: string = stateStore.selectedRemotefeed === "" ?
+  const bidsUrl: string = stateStore.selectedRemotefeed === "" ?
     "https://dev-app-api.catapultx.com/api/v1/reports/remotefeeds/all/" +
     stateStore.start +
     "/" +
@@ -23,13 +23,13 @@ export const RFCoverage = observer<any, any>(() => {
     "/rtb_rem_imp_coverage";
 
   useEffect(() => {
-    new StateService(rfCoverageUrl)
+    new StateService(bidsUrl)
       .Get()
       .then((jres) => jres.total)
       .then((total) => total.rtb_rem_imp_coverage)
-      .then((data) => (stateStore.rfCoverage = data))
+      .then((data) => (stateStore.rfBids = data))
   });
 
-  return   <Paper style={{ height: "100%" }}><Typography variant="subtitle1">Coverage:</Typography><div style={{textAlign: "center"}}><Typography variant="subtitle2">{stateStore.rfCoverage}</Typography></div></Paper>
+  return   <Paper style={{ height: "100%" }}><Typography variant="subtitle1">Bids:</Typography><div style={{textAlign: "center"}}><Typography variant="subtitle2">{stateStore.rfBids}</Typography></div></Paper>
 
 });

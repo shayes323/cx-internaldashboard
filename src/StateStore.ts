@@ -1,14 +1,14 @@
 import { makeAutoObservable, observable, autorun } from "mobx";
 import { createContext } from "react";
 import { Collection, EnumDeclaration, EnumType } from "typescript";
-import { Day } from "./Day";
 import { Home } from "./Home";
-import { PublisherTableObject } from "./PublisherTableObject";
+import { PublisherTableObject } from "./TableObjects";
+import { Utils } from "./Utils";
 
 class StateStore {
-  public start: string = Day.getToday();
+  public start: string = Utils.GetToday();
 
-  public end: string = Day.getToday();
+  public end: string = Utils.GetToday();
 
   public clickedButton: boolean = false;
 

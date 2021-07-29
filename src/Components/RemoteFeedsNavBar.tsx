@@ -11,12 +11,10 @@ import {
   Divider,
 } from "@material-ui/core";
 import { Link } from "react-router-dom";
-import { GoButton } from "./GoButton";
 import { RFStartTextField, RFEndTextField } from "./RFTextFields";
 import { PublishersDropDown } from "./PublishersDropdown";
 import { PageSelectDropDown } from "./PageSelectDropDown";
 import MenuIcon from "@material-ui/icons/Menu";
-import { MenuButton } from "./MenuButton";
 import { theme } from "./Theme";
 import { RemoteFeedsDropDown } from "./RemoteFeedsDropdown";
 

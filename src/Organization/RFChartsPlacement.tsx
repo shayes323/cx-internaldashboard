@@ -1,5 +1,5 @@
 import { Grid } from "@material-ui/core";
-import { PublishersDailyImpressionsChart } from "../Components/PublishersDailyImpressionsChart";
+import { PubDailyChart } from "../Components/PubDailyChart";
 import { DeviceBreakdown } from "../Components/DeviceBreakdown";
 import { ZoneFeedData } from "../Components/ZoneFeedData";
 import { RFDailyChart } from "../Components/RFDailyChart";

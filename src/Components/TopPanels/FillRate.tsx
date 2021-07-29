@@ -1,9 +1,9 @@
 import { Paper, Typography } from "@material-ui/core";
 import { observer } from "mobx-react-lite";
 import react, { useContext, useEffect } from "react";
-import { StateService } from "../StateService";
-import { stateStoreContext } from "../StateStore";
-import { Num } from "./Num";
+import { StateService } from "../../StateService";
+import { stateStoreContext } from "../../StateStore";
+import { Utils } from "../../Utils";
 
 export const FillRate = observer<any, any>(() => {
   const stateStore = useContext(stateStoreContext);
@@ -39,6 +39,6 @@ export const FillRate = observer<any, any>(() => {
   });
 
 
-  return   <Paper style={{ height: "100%" }}><Typography variant="subtitle1">FILL RATE:</Typography><div style={{textAlign: "center"}}><Typography variant="subtitle2">{Num.RoundNum(stateStore.fillRate)}</Typography></div></Paper>
+  return   <Paper style={{ height: "100%" }}><Typography variant="subtitle1">FILL RATE:</Typography><div style={{textAlign: "center"}}><Typography variant="subtitle2">{Utils.RoundNum(stateStore.fillRate)}</Typography></div></Paper>
 
 });

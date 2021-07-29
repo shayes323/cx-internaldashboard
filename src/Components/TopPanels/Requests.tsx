@@ -1,9 +1,9 @@
 import { Paper, ThemeProvider, Typography } from "@material-ui/core";
 import { observer } from "mobx-react-lite";
 import react, { useContext, useEffect } from "react";
-import { StateService } from "../StateService";
-import { stateStoreContext } from "../StateStore";
-import { theme } from "./Theme";
+import { StateService } from "../../StateService";
+import { stateStoreContext } from "../../StateStore";
+import { theme } from "../Theme";
 
 export const Requests = observer<any, any>(() => {
   const stateStore = useContext(stateStoreContext);

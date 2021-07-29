@@ -11,16 +11,20 @@ import {
   Divider,
 } from "@material-ui/core";
 import { Link } from "react-router-dom";
-import { GoButton } from "./GoButton";
-import { PubStartTextField, PubEndTextField } from "./PubTextFields";
+import { StartDateField, EndDateField } from "./DateFields";
 import { PublishersDropDown } from "./PublishersDropdown";
 import { PageSelectDropDown } from "./PageSelectDropDown";
 import MenuIcon from "@material-ui/icons/Menu";
-import { MenuButton } from "./MenuButton";
 import { theme } from "./Theme"
+import { stateStoreContext } from "../StateStore";
+import { observer } from "mobx-react-lite";
+import { useContext } from "react";
+import { RemoteFeedsDropDown } from "./RemoteFeedsDropdown";
 
-export function PublishersNavBar() {
-  
+
+export const NavBar: any = observer<any, any>(() => {
+  const stateStore = useContext(stateStoreContext);
+
 
   return (
     <ThemeProvider theme={theme}>
@@ -42,22 +46,22 @@ export function PublishersNavBar() {
               <PageSelectDropDown  />
           </Grid>
           <Grid item xs>
-            <Box style={{marginLeft:"25px"}}>Publisher: </Box>
+            {stateStore.page === "publishers" ? <Box style={{marginLeft:"25px"}}>Publisher: </Box> : <Box style={{ marginLeft: "-12px" }}>Remote Feeds: </Box> }
           </Grid>
           <Grid item xs>
-            <PublishersDropDown />
+            {stateStore.page === "publishers" ? <PublishersDropDown /> : <RemoteFeedsDropDown />}
           </Grid>
           <Grid item xs>
             <Box style={{marginLeft:"44px"}}>Start Date: </Box>
           </Grid>
           <Grid item xs>
-           <PubStartTextField />
+           <StartDateField />
            </Grid>
            <Grid item xs>
             <Box style={{marginLeft:"50px"}}>End Date: </Box>
           </Grid>
           <Grid item xs>
-            <PubEndTextField />
+            <EndDateField />
           </Grid>
         </Grid>
         <Divider style={{marginLeft: "20px", marginRight: "20px", height: "1.5px"}} />
@@ -66,4 +70,4 @@ export function PublishersNavBar() {
 
     </ThemeProvider>
   );
-}
+})

@@ -1,9 +1,9 @@
 import { Paper, Typography } from "@material-ui/core";
 import { observer } from "mobx-react-lite";
 import react, { useContext, useEffect } from "react";
-import { StateService } from "../StateService";
-import { stateStoreContext } from "../StateStore";
-import { Num } from "./Num";
+import { StateService } from "../../StateService";
+import { stateStoreContext } from "../../StateStore";
+import { Utils } from "../../Utils";
 
 export const Ecpm = observer<any, any>(() => {
   const stateStore = useContext(stateStoreContext);
@@ -27,10 +27,11 @@ export const Ecpm = observer<any, any>(() => {
     new StateService(ecpmUrl)
       .Get()
       .then((jres) => jres.total)
+      // .then((test) => console.log(test));
       .then((total) => total.rtb_pub_ecpm)
       .then((data) => (stateStore.ecpm = data))
   });
 
-  return   <Paper style={{ height: "100%" }}><Typography variant="subtitle1">ECPM:</Typography><div style={{textAlign: "center"}}><Typography variant="subtitle2">{Num.RoundNum(stateStore.ecpm)}</Typography></div></Paper>
+  return   <Paper style={{ height: "100%" }}><Typography variant="subtitle1">ECPM:</Typography><div style={{textAlign: "center"}}><Typography variant="subtitle2">{Utils.RoundNum(stateStore.ecpm)}</Typography></div></Paper>
 
 });

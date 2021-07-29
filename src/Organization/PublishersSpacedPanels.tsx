@@ -1,11 +1,11 @@
 import { Box, Container, Grid } from "@material-ui/core";
-import { Ctr } from "../Components/Ctr";
-import { Ecpm } from "../Components/Ecpm";
-import { EstimatedRevenue } from "../Components/EstimatedRevenue";
-import { FillRate } from "../Components/FillRate";
-import { Impressions } from "../Components/Impressions";
-import { Requests } from "../Components/Requests";
-import { WinRate } from "../Components/WinRate";
+import { Ctr } from "../Components/TopPanels/Ctr";
+import { Ecpm } from "../Components/TopPanels/Ecpm";
+import { EstimatedRevenue } from "../Components/TopPanels/EstimatedRevenue";
+import { FillRate } from "../Components/TopPanels/FillRate";
+import { Impressions } from "../Components/TopPanels/Impressions";
+import { Requests } from "../Components/TopPanels/Requests";
+import { WinRate } from "../Components/TopPanels/WinRate";
 
 export function PublishersSpacedPanels() {
   return (

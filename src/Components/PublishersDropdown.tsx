@@ -25,7 +25,6 @@ export const PublishersDropDown: any = observer<any, any>(() => {
         stateStore.end
       : "";
 
-
   useEffect(() => {
     var pubMap = new Map<string, number>();
     new StateService(publishersUrl)
@@ -46,7 +45,6 @@ export const PublishersDropDown: any = observer<any, any>(() => {
       runInAction(() => (stateStore.selectedPublisher = ""));
       return;
     }
-    //how do I select the publisher
     e.preventDefault();
     const key = e.target.value;
     console.log(e.target.value);
@@ -57,17 +55,6 @@ export const PublishersDropDown: any = observer<any, any>(() => {
     const pubId = toJS(stateStore.publishersMap).get(pub);
     runInAction(() => (stateStore.selectedPublisher = pubId)); //getting correct publisherid
     console.log(stateStore.selectedPublisher);
-  }
-
-  function handleClick() {
-    runInAction(() => (stateStore.selectedPublisher = ""));
-    // runInAction(() => stateStore.publishersList = []);
-    // runInAction(() => stateStore.publishersMap = new Map());
-  }
-
-  function handleRenderValue(e) {
-    setFieldVal(e.currentTarget);
-    return fieldVal;
   }
 
   return (

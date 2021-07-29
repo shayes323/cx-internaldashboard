@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useContext, createContext } from "react";
-import { Title } from "./Components/Title";
 import {
   LineChart,
   Line,
@@ -17,25 +16,21 @@ import {
   Switch,
   Redirect,
 } from "react-router-dom";
-
 import { Box, createMuiTheme, ThemeProvider } from "@material-ui/core";
 import { orange, purple } from "@material-ui/core/colors";
 import { stateStoreContext } from "./StateStore";
 import { observer } from "mobx-react-lite";
 import { StateService } from "./StateService";
 import { Link } from "react-router-dom";
-import { Charts } from "./Components/Charts";
-import { GoButton } from "./Components/GoButton";
-import { PublishersNavBar } from "./Components/PublishersNavBar";
-import { NewPage } from "./NewPage";
+import { NavBar } from "./Components/NavBar";
 import { spacing } from "@material-ui/system";
-import { EstimatedRevenue } from "./Components/EstimatedRevenue";
-import { Requests } from "./Components/Requests";
-import { Impressions } from "./Components/Impressions";
-import { Ecpm } from "./Components/Ecpm";
-import { FillRate } from "./Components/FillRate";
+import { EstimatedRevenue } from "./Components/TopPanels/EstimatedRevenue";
+import { Requests } from "./Components/TopPanels/Requests";
+import { Impressions } from "./Components/TopPanels/Impressions";
+import { Ecpm } from "./Components/TopPanels/Ecpm";
+import { FillRate } from "./Components/TopPanels/FillRate";
 import { PublishersSpacedPanels } from "./Organization/PublishersSpacedPanels";
-import { PublishersDailyImpressionsChart } from "./Components/PublishersDailyImpressionsChart";
+import { PubDailyChart } from "./Components/PubDailyChart";
 import { ZoneFeedData } from "./Components/ZoneFeedData";
 import { PublishersChartsPlacement } from "./Organization/PublishersChartsPlacement";
 import { RemoteFeedsNavBar } from "./Components/RemoteFeedsNavBar";
@@ -62,10 +57,9 @@ export const Home: any = observer<any, any>(() => {
     <Box style={{ height: '100vh', minHeight: "100vh", backgroundColor: "#F2F3F4"}}>
     <div>
       <Router>
-        {/* <div className="PageConstants">
-          <RemoteFeedsNavBar />
-          <RFSpacedPanels />
-        </div> */}
+         <div className="PageConstants">
+         <NavBar />
+        </div>
             <div className="Content">
           <Switch>
             <Route exact path="/">
@@ -73,14 +67,13 @@ export const Home: any = observer<any, any>(() => {
             </Route>
             <Route exact path="/publishers">
               <div style={{backgroundColor: "#F2F3F4"}}>
-                <PublishersNavBar />
                 <PublishersSpacedPanels />
               </div>
               <PublishersChartsPlacement />
             </Route>
             <Route exact path="/RemoteFeeds">
               <div style={{backgroundColor: "#F2F3F4"}}>
-                <RemoteFeedsNavBar />
+                {/* <RemoteFeedsNavBar /> */}
                 <RFSpacedPanels />
               </div>
               <RFChartsPlacement />

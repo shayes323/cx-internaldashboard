@@ -1,16 +1,16 @@
 import { Box, Container, Grid } from "@material-ui/core";
-import { Ctr } from "../Components/Ctr";
-import { Ecpm } from "../Components/Ecpm";
-import { EstimatedRevenue } from "../Components/EstimatedRevenue";
-import { FillRate } from "../Components/FillRate";
-import { Impressions } from "../Components/Impressions";
-import { Requests } from "../Components/Requests";
-import { RFAvgBidEcpm } from "../Components/RFAvgBidEcpm";
-import { RFBids } from "../Components/RFBids";
-import { RFCoverage } from "../Components/RFCoverage";
-import { RFGrossRevenue } from "../Components/RFGrossRevenue";
-import { RFRequestedBids } from "../Components/RFRequestedBids";
-import { WinRate } from "../Components/WinRate";
+import { Ctr } from "../Components/TopPanels/Ctr";
+import { Ecpm } from "../Components/TopPanels/Ecpm";
+import { EstimatedRevenue } from "../Components/TopPanels/EstimatedRevenue";
+import { FillRate } from "../Components/TopPanels/FillRate";
+import { Impressions } from "../Components/TopPanels/Impressions";
+import { Requests } from "../Components/TopPanels/Requests";
+import { AvgBidEcpm } from "../Components/TopPanels/AvgBidEcpm";
+import { Bids } from "../Components/TopPanels/Bids";
+import { Coverage } from "../Components/TopPanels/Coverage";
+import { GrossRevenue } from "../Components/TopPanels/GrossRevenue";
+import { RequestedBids } from "../Components/TopPanels/RequestedBids";
+import { WinRate } from "../Components/TopPanels/WinRate";
 
 export function RFSpacedPanels() {
   return (
@@ -23,19 +23,19 @@ export function RFSpacedPanels() {
         style={{ display: "flexInline", height: 110 }}
       >
         <Grid item xs>
-          <RFGrossRevenue />
+          <GrossRevenue />
         </Grid>
         <Grid item xs>
-          <RFRequestedBids />
+          <RequestedBids />
         </Grid>
         <Grid item xs>
-          <RFBids />
+          <Bids />
         </Grid>
         <Grid item xs>
-          <RFAvgBidEcpm />
+          <AvgBidEcpm />
         </Grid>
         <Grid item xs>
-          <RFCoverage />
+          <Coverage />
         </Grid>
       </Grid>
     </Box>
