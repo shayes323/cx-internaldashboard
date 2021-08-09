@@ -15,21 +15,21 @@ import { StartDateField, EndDateField } from "./DateFields";
 import { PublishersDropDown } from "./PublishersDropdown";
 import { PageSelectDropDown } from "./PageSelectDropDown";
 import MenuIcon from "@material-ui/icons/Menu";
-import { theme } from "./Theme"
+// import { theme } from "./Theme";
 import { stateStoreContext } from "../StateStore";
 import { observer } from "mobx-react-lite";
 import { useContext } from "react";
 import { RemoteFeedsDropDown } from "./RemoteFeedsDropdown";
-
+import "./NavBar.css";
 
 export const NavBar: any = observer<any, any>(() => {
   const stateStore = useContext(stateStoreContext);
 
-
   return (
-    <ThemeProvider theme={theme}>
-      <div>
-        <Typography>CX Insights</Typography>
+    <>
+      <div className="title">
+        <CompanyLogo />
+        Insights
       </div>
       <Box m={0}>
         <Grid
@@ -40,34 +40,46 @@ export const NavBar: any = observer<any, any>(() => {
           spacing={2}
         >
           <Grid item xs>
-            <Box style={{marginLeft: "50px"}}>View:</Box>
+            <span className="leftLabel">View:</span>
           </Grid>
           <Grid item xs>
-              <PageSelectDropDown  />
+            <PageSelectDropDown/>
           </Grid>
           <Grid item xs>
-            {stateStore.page === "publishers" ? <Box style={{marginLeft:"25px"}}>Publisher: </Box> : <Box style={{ marginLeft: "-12px" }}>Remote Feeds: </Box> }
+            {stateStore.page === "publishers" ? (
+              <span className="label">Publisher: </span>
+            ) : (
+              <span className="label">Remote Feeds: </span>
+            )}
           </Grid>
           <Grid item xs>
-            {stateStore.page === "publishers" ? <PublishersDropDown /> : <RemoteFeedsDropDown />}
+            {stateStore.page === "publishers" ? (
+              <PublishersDropDown />
+            ) : (
+              <RemoteFeedsDropDown />
+            )}
           </Grid>
           <Grid item xs>
-            <Box style={{marginLeft:"44px"}}>Start Date: </Box>
+            <span className="label">Start Date:</span>
           </Grid>
           <Grid item xs>
-           <StartDateField />
-           </Grid>
-           <Grid item xs>
-            <Box style={{marginLeft:"50px"}}>End Date: </Box>
+            <StartDateField />
+          </Grid>
+          <Grid item xs>
+            <span className="label">End Date:</span>
           </Grid>
           <Grid item xs>
             <EndDateField />
           </Grid>
         </Grid>
-        <Divider style={{marginLeft: "20px", marginRight: "20px", height: "1.5px"}} />
-    
-    </Box>
-
-    </ThemeProvider>
+        <Divider
+          style={{ marginLeft: "20px", marginRight: "20px", height: "1.5px" }}
+        />
+      </Box>
+    </>
   );
-})
+});
+
+function CompanyLogo() {
+  return <img src="CXLogo.png" className="logo" alt="CX Logo" />;
+}

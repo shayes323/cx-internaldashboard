@@ -1,12 +1,12 @@
 import { makeAutoObservable, observable, autorun } from "mobx";
 import { createContext } from "react";
 import { Collection, EnumDeclaration, EnumType } from "typescript";
-import { Home } from "./Home";
-import { PublisherTableObject } from "./TableObjects";
+import { App } from "./App";
+import { PublisherTableObject, RFTableObject } from "./TableObjects";
 import { Utils } from "./Utils";
 
 class StateStore {
-  public start: string = Utils.GetToday();
+  public start: string = Utils.GetFirstOfMonth();
 
   public end: string = Utils.GetToday();
 
@@ -43,7 +43,7 @@ class StateStore {
 
   public ecpm: any = "";
 
-  public selectedPublisher: string|number = "";
+  public selectedPublisher: any = "";
 
   public publisherTableArray: PublisherTableObject[];
 
@@ -79,10 +79,19 @@ class StateStore {
   public rfResponseRequestedBids: any = "";
   public rfResponseBids: any = "";
 
-  public rfTableArray: any[] = [];
+  public rfTableArray: RFTableObject[] = [];
 
   public page: any = "publishers"
 
+  public deviceCounts: number[];
+
+  public pieChartReload: boolean = false;
+
+  public pubPieChartData: number[] = [];
+  public rfPieChartData: number[] = [];
+
+
+  public dailyChartReload: boolean = false;
   constructor() {
     makeAutoObservable(this);
   }

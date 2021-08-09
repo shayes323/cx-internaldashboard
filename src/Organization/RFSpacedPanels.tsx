@@ -1,16 +1,16 @@
 import { Box, Container, Grid } from "@material-ui/core";
-import { Ctr } from "../Components/TopPanels/Ctr";
-import { Ecpm } from "../Components/TopPanels/Ecpm";
-import { EstimatedRevenue } from "../Components/TopPanels/EstimatedRevenue";
-import { FillRate } from "../Components/TopPanels/FillRate";
-import { Impressions } from "../Components/TopPanels/Impressions";
-import { Requests } from "../Components/TopPanels/Requests";
-import { AvgBidEcpm } from "../Components/TopPanels/AvgBidEcpm";
-import { Bids } from "../Components/TopPanels/Bids";
-import { Coverage } from "../Components/TopPanels/Coverage";
-import { GrossRevenue } from "../Components/TopPanels/GrossRevenue";
-import { RequestedBids } from "../Components/TopPanels/RequestedBids";
-import { WinRate } from "../Components/TopPanels/WinRate";
+import { Ctr } from "../Components/TopPanels/Publishers/Ctr";
+import { Ecpm } from "../Components/TopPanels/Publishers/Ecpm";
+import { EstimatedRevenue } from "../Components/TopPanels/Publishers/EstimatedRevenue";
+import { FillRate } from "../Components/TopPanels/Publishers/FillRate";
+import { Impressions } from "../Components/TopPanels/Publishers/Impressions";
+import { Requests } from "../Components/TopPanels/Publishers/Requests";
+import { AvgBidEcpm } from "../Components/TopPanels/RemoteFeeds/AvgBidEcpm";
+import { Bids } from "../Components/TopPanels/RemoteFeeds/Bids";
+import { Coverage } from "../Components/TopPanels/RemoteFeeds/Coverage";
+import { GrossRevenue } from "../Components/TopPanels/RemoteFeeds/GrossRevenue";
+import { RequestedBids } from "../Components/TopPanels/RemoteFeeds/RequestedBids";
+import { WinRate } from "../Components/TopPanels/Publishers/WinRate";
 
 export function RFSpacedPanels() {
   return (

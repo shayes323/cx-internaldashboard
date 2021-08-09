@@ -1,7 +1,6 @@
 import Highcharts from "highcharts";
 import { observer } from "mobx-react-lite";
 import { useContext } from "react";
-import { AnonymousSubject } from "rxjs/internal/Subject";
 import { stateStoreContext } from "../StateStore";
 
 export function CreatePubChart(responseDates: any, responseRevenue: any[], responseRequests: any[], responseImpressions: any[]){
@@ -185,6 +184,198 @@ export function CreatePubChart(responseDates: any, responseRevenue: any[], respo
         },
       ],
     });
+  }
+
+  export function CreateDeviceChart(unknown: number, other: number, mobile: number, desktop: number, tv: number, tablet: number, gameConsole: number, overall: number) {
+    return  (Highcharts.chart("pieContainer", {
+      chart: {
+        plotBackgroundColor: null,
+        plotBorderWidth: null,
+        plotShadow: false,
+        type: "pie",
+      },
+      title: {
+        text: "DEVICE BREAKDOWN",
+      },
+      tooltip: {
+        pointFormat: "{series.name}: <b>{point.percentage:.1f}%</b>",
+      },
+      accessibility: {
+        point: {
+          valueSuffix: "%",
+        },
+      },
+      plotOptions: {
+        pie: {
+          allowPointSelect: true,
+          cursor: "pointer",
+          dataLabels: {
+            enabled: true,
+            format: "<b>{point.name}</b>: {point.percentage:.1f} %",
+          },
+          showInLegend: true,
+        },
+      },
+      series: [
+        {
+          type: "pie",
+          name: "Device Type",
+          colorByPoint: true,
+          data: [
+            {
+              name: "Unknown",
+              y: (unknown / overall),
+              // sliced: true,
+              selected: true,
+            },
+            {
+              name: "Other",
+              y: (other / overall),
+            },
+            {
+              name: "Mobile",
+              y: (mobile / overall),
+            },
+            {
+              name: "Desktop",
+              y: (desktop / overall),
+            },
+            {
+              name: "TV",
+              y: (tv / overall),
+            },
+            {
+              name: "Tablet",
+              y: (tablet / overall),
+            },
+            {
+              name: "Game Console",
+              y: (gameConsole / overall),
+            },
+          ],
+        },
+      ],
+      responsive: {
+        rules: [
+          {
+            condition: {
+              maxWidth: 300,
+            },
+            chartOptions: {
+              legend: {
+                align: "center",
+                verticalAlign: "bottom",
+                layout: "horizontal",
+              },
+              yAxis: {
+                labels: {
+                  align: "left",
+                  x: 0,
+                  y: -5,
+                },
+                title: {
+                  text: null,
+                },
+              },
+              subtitle: {
+                text: null,
+              },
+              credits: {
+                enabled: false,
+              },
+            },
+          },
+        ],
+      },
+    }));
+  }
+
+  export function CreateTrafficChart(banner: number, video: number, native: number, overall: number) {
+    return  (Highcharts.chart("pieContainer", {
+      chart: {
+        plotBackgroundColor: null,
+        plotBorderWidth: null,
+        plotShadow: false,
+        type: "pie",
+      },
+      title: {
+        text: "TRAFFIC BREAKDOWN",
+      },
+      tooltip: {
+        pointFormat: "{series.name}: <b>{point.percentage:.1f}%</b>",
+      },
+      accessibility: {
+        point: {
+          valueSuffix: "%",
+        },
+      },
+      plotOptions: {
+        pie: {
+          allowPointSelect: true,
+          cursor: "pointer",
+          dataLabels: {
+            enabled: true,
+            format: "<b>{point.name}</b>: {point.percentage:.1f} %",
+          },
+          showInLegend: true,
+        },
+      },
+      series: [
+        {
+          type: "pie",
+          name: "Device Type",
+          colorByPoint: true,
+          data: [
+            {
+              name: "Banner",
+              y: (banner / overall),
+              // sliced: true,
+              selected: true,
+            },
+            {
+              name: "Video",
+              y: (video / overall),
+            },
+            {
+              name: "Native",
+              y: (native / overall),
+            },
+          ],
+        },
+      ],
+      responsive: {
+        rules: [
+          {
+            condition: {
+              maxWidth: 300,
+            },
+            chartOptions: {
+              legend: {
+                align: "center",
+                verticalAlign: "bottom",
+                layout: "horizontal",
+              },
+              yAxis: {
+                labels: {
+                  align: "left",
+                  x: 0,
+                  y: -5,
+                },
+                title: {
+                  text: null,
+                },
+              },
+              subtitle: {
+                text: null,
+              },
+              credits: {
+                enabled: false,
+              },
+            },
+          },
+        ],
+      },
+    }));
   }
 
 

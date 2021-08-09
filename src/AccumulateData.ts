@@ -3,7 +3,6 @@ export class Accumulate {
     var map: Map<string, any> = new Map();
     arrayOfDateMap.forEach((element: Map<string, any>) => {
       var dateStore: string = Array.from(element.keys())[0];
-      console.log(dateStore);
       if (map.has(dateStore)) {
         let temp = map.get(dateStore);
         map.set(dateStore, temp + element.get(Array.from(element.keys())[0]));
@@ -13,21 +12,22 @@ export class Accumulate {
     });
     return Array.from(map.values());
   }
-
-  public static AccumulateByPublisher(
-    arrayOfPublisherMap: Array<Map<string, any>>
-  ) {
-    var map: Map<string, any> = new Map();
-    arrayOfPublisherMap.forEach((element: Map<string, any>) => {
-      var publisherStore: string = Array.from(element.keys())[0];
-      console.log(publisherStore);
-      if (!map.has(publisherStore)) {
-        map.set(publisherStore, Array.from(element.values())[0]);
-      }
-    });
-    return Array.from(map.values());
-  }
 }
+
+//   public static AccumulateByPublisher(
+//     arrayOfPublisherMap: Array<Map<string, any>>
+//   ) {
+//     var map: Map<string, any> = new Map();
+//     arrayOfPublisherMap.forEach((element: Map<string, any>) => {
+//       var publisherStore: string = Array.from(element.keys())[0];
+//       console.log(publisherStore);
+//       if (!map.has(publisherStore)) {
+//         map.set(publisherStore, Array.from(element.values())[0]);
+//       }
+//     });
+//     return Array.from(map.values());
+//   }
+// }
 
 // class Test {
 

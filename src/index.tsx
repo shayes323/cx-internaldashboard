@@ -2,15 +2,16 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
-import { Home } from "./Home";
+import { App } from "./App";
 import { ZoneFeedData } from "./Components/ZoneFeedData";
 import { RemoteFeedsDropDown } from "./Components/RemoteFeedsDropdown";
-import { RemoteFeedsNavBar } from "./Components/RemoteFeedsNavBar";
-
+import { EstimatedRevenue } from "./Components/TopPanels/Publishers/EstimatedRevenue";
+import { PieChart } from "./Components/PieChart";
+import { PubDailyChart } from "./Components/PubDailyChart";
 
 ReactDOM.render(
   <React.StrictMode>
-    <Home />
+    <App />
   </React.StrictMode>,
   document.getElementById("root")
 );

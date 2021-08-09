@@ -1,5 +1,5 @@
 import { stateStoreContext } from "../StateStore";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { StateService } from "../StateService";
 import {
   Select,
@@ -12,26 +12,30 @@ import {
 import { runInAction, toJS } from "mobx";
 import { observer } from "mobx-react-lite";
 import { Accumulate } from "../AccumulateData";
+import { Utils } from "../Utils";
 
 export const RemoteFeedsDropDown: any = observer<any, any>(() => {
   const stateStore = useContext(stateStoreContext);
+  const [fieldVal, setFieldVal] = useState<string>("");
+
 
   var remotefeedsUrl =
     stateStore.start != "" && stateStore.end != ""
-      ? "https://dev-app-api.catapultx.com/api/v1/reports/remotefeeds/all/" +
-        stateStore.start +
-        "/" +
-        stateStore.end
+      ? Utils.CreateUrl(
+        "remotefeeds",
+        stateStore.start,
+        stateStore.end,
+        "none",
+        "none",
+        "all"
+      )
       : "";
 
 
   useEffect(() => {
     var feedMap = new Map<string, number>();
-    new StateService(remotefeedsUrl)
-      .Get()
-      .then((jres: any) => jres.list)
-      .then((res) =>
-        res.forEach((element) => {
+    Utils.FetchList(remotefeedsUrl).then((res) =>
+        res.forEach((element: any) => {
           feedMap.set(element.remotefeed, element.remotefeed_id);
         })
       )
@@ -39,20 +43,21 @@ export const RemoteFeedsDropDown: any = observer<any, any>(() => {
       .then(() => (stateStore.remotefeedsList = Array.from(feedMap.keys())));
   });
 
-  function handleChange(e) {
-    //how do I select the publisher
+  function handleChange(e: any) {
+    if (e.target.value == "all") {
+      setFieldVal("all");
+      runInAction(() => (stateStore.selectedRemotefeed = ""));
+      return;
+    }
     e.preventDefault();
     const key = e.target.value;
-    const feed = stateStore.remotefeedsList[key];
-    const feedId = toJS(stateStore.remotefeedsMap).get(feed);
-    runInAction(() => (stateStore.selectedRemotefeed = feedId)); //getting correct publisherid
-    console.log(stateStore.selectedRemotefeed);
-  }
+    console.log(e.target.value);
+    console.log(stateStore.remotefeedsList[key]);
+    setFieldVal(stateStore.remotefeedsList[key]);
 
-  function handleClick() {
-    runInAction(() => stateStore.selectedRemotefeed = "");
-    // runInAction(() => stateStore.publishersList = []);
-    // runInAction(() => stateStore.publishersMap = new Map());
+    const pub = stateStore.remotefeedsList[key];
+    const pubId = toJS(stateStore.remotefeedsMap).get(pub);
+    runInAction(() => (stateStore.selectedRemotefeed = pubId));
   }
 
   return (
@@ -63,13 +68,16 @@ export const RemoteFeedsDropDown: any = observer<any, any>(() => {
           width: "200px",
           backgroundColor: "white",
           marginLeft: "-30px",
+          textAlign: "center",
+
         }}
-        defaultValue={""}
+        defaultValue={fieldVal}
         displayEmpty={true}
+        renderValue={() => (fieldVal != "" ? fieldVal : "all")}
         onChange={handleChange}
         variant="outlined"
       >
-        <MenuItem onClick={handleClick} value="">all</MenuItem>
+        <MenuItem value="all">all</MenuItem>
         {stateStore.remotefeedsList.map((remotefeed: any, key: any) => (
           <MenuItem value={key}>{remotefeed}</MenuItem>
         ))}

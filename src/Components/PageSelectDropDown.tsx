@@ -16,27 +16,13 @@ export function PageSelectDropDown() {
   const stateStore = useContext(stateStoreContext);
   const [page, setPage] = useState("publishers");
 
-  // function handleChange(e: any) {
-  //   e.preventDefault();
-  //   setValue(e.target.value);
-  //   runInAction(() => (stateStore.reportType = e.target.value));
-  //   }
-
   const history = useHistory();
 
   const handleChange = (e) => {
-    // if (
-    //   value === "publishers"
-    // ) {
-    //   setValue("remote feeds");
-      // runInAction(() => (stateStore.reportType = "remote feeds"));
-    // }
-    // if (value === "remote feeds") {
-    //   setValue("publishers");
-    //   runInAction(() => (stateStore.reportType = "publishers"));
-    // }
     console.log(e.target.value);
     runInAction(() => stateStore.page = e.target.value);
+    runInAction(() => stateStore.pieChartReload = false);
+    runInAction(() => stateStore.dailyChartReload = false);
     let path = e.target.value as string;
     history.push(path);
   
@@ -49,7 +35,7 @@ export function PageSelectDropDown() {
           style={{
             height: "35px",
             backgroundColor: "white",
-            marginLeft: "-35px",
+            // marginLeft: "-35px",
           }}
           displayEmpty
           onChange={handleChange}

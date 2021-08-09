@@ -1,10 +1,4 @@
 import { observer } from "mobx-react-lite";
-import {
-  DataGrid,
-  GridColDef,
-  GridRowModel,
-  GridRowsProp,
-} from "@material-ui/data-grid";
 import { useContext, useEffect, useState } from "react";
 import { StateService } from "../StateService";
 import { stateStoreContext } from "../StateStore";
@@ -30,6 +24,7 @@ import Remove from '@material-ui/icons/Remove';
 import SaveAlt from '@material-ui/icons/SaveAlt';
 import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
+import { Utils } from "../Utils";
 
 
 const columns: any[] = [
@@ -45,22 +40,26 @@ export const ZoneFeedData = observer<any, any>(() => {
   const stateStore = useContext(stateStoreContext);
   const [ready, setReady] = useState<boolean>(false);
 
-  const tableUrl =
-    stateStore.selectedPublisher === ""
-      ? "https://dev-app-api.catapultx.com/api/v1/reports/zones/all/" +
-        stateStore.start +
-        "/" +
-        stateStore.end +
-        "/rtb_pub_impressions,rtb_pub_requests,rtb_pub_revenue,rtb_pub_ecpm"
-      : "https://dev-app-api.catapultx.com/api/v1/reports/zones/" +
-        stateStore.start +
-        "/" +
-        stateStore.end +
-        "/" +
-        "publisher=" +
-        stateStore.selectedPublisher +
-        "/rtb_pub_impressions,rtb_pub_requests,rtb_pub_revenue,rtb_pub_ecpm";
 
+  const tableUrl: string =
+    stateStore.selectedPublisher === ""
+      ? Utils.CreateUrl(
+          "zones",
+          stateStore.start,
+          stateStore.end,
+          "none",
+          "none",
+          "rtb_pub_impressions,rtb_pub_requests,rtb_pub_revenue,rtb_pub_ecpm"
+        )
+      : Utils.CreateUrl(
+          "zones",
+          stateStore.start,
+          stateStore.end,
+          "publisher=" + stateStore.selectedPublisher,
+          "none",
+          "rtb_pub_impressions,rtb_pub_requests,rtb_pub_revenue,rtb_pub_ecpm"
+        );
+  
   useEffect(() => {
     console.log("effect used");
     new StateService(tableUrl)
@@ -81,9 +80,10 @@ export const ZoneFeedData = observer<any, any>(() => {
         )
       ) 
       .then((info: PublisherTableObject[]) => (stateStore.publisherTableArray = info))
+      .then(() => console.log(stateStore.publisherTableArray))
       .then(() => console.log(columns))
       .then(() => setReady(true));
-  });
+  },[stateStore.start, stateStore.end, stateStore.selectedPublisher]);
 
   if (ready == false) {
     return <div> Loading </div>;

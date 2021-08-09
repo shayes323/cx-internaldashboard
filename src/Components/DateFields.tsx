@@ -20,6 +20,22 @@ import { Utils } from "../Utils";
 export function StartDateField() {
   const stateStore = useContext(stateStoreContext);
 
+
+  function Valid() {
+    if (Utils.GetYear(stateStore.start) > Utils. GetYear(stateStore.end)) {
+      return false;
+
+    } else if (Utils.GetYear(stateStore.start) === Utils. GetYear(stateStore.end) && Utils.GetMonth(stateStore.start) > Utils.GetMonth(stateStore.end)) {
+      return false
+
+    } else if (Utils.GetYear(stateStore.start) === Utils. GetYear(stateStore.end) && Utils.GetMonth(stateStore.start) === Utils.GetMonth(stateStore.end) && Utils.GetDay(stateStore.start) > Utils.GetDay(stateStore.end)) {
+      return false
+    }
+    return true;
+  }
+
+
+
   function HandleStartChange(e: any) {
     runInAction(() => (stateStore.start = e.target.value));
   }
@@ -27,7 +43,7 @@ export function StartDateField() {
   return (
     <TextField
       className="TextFields"
-      defaultValue={Utils.GetToday()}
+      defaultValue={stateStore.start}
       size="small"
       margin="normal"
       onChange={HandleStartChange}
@@ -36,6 +52,7 @@ export function StartDateField() {
       variant="outlined"
       type="date"
       style={{width:"170px", backgroundColor: "white" }}
+      // error={Valid() === false}
     />
   );
 }
@@ -46,11 +63,10 @@ export function EndDateField() {
   function HandleEndChange(e: any) {
     runInAction(() => (stateStore.end = e.target.value));
   }
-
   return (
+    <span className = "endDate">
     <TextField
-      className="TextFields"
-      defaultValue={Utils.GetToday()}
+      defaultValue={stateStore.end}
       size="small"
       onChange={HandleEndChange}
       id="endDate"
@@ -58,7 +74,10 @@ export function EndDateField() {
       variant="outlined"
       type="date"
       margin="normal"
-      style={{width:"170px", backgroundColor: "white", marginRight: "50px" }}
+      style={{width:"170px", backgroundColor: "white", }}
+      //marginRight: "50px"
     />
+          </span>
+
   );
 }

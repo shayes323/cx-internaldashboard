@@ -1,6 +1,6 @@
 import { Grid } from "@material-ui/core";
 import { PubDailyChart } from "../Components/PubDailyChart";
-import { DeviceBreakdown } from "../Components/DeviceBreakdown";
+import { PieChart } from "../Components/PieChart";
 import { ZoneFeedData } from "../Components/ZoneFeedData";
 
 export function PublishersChartsPlacement() {
@@ -19,7 +19,7 @@ export function PublishersChartsPlacement() {
             <ZoneFeedData />
           </Grid>
           <Grid item xs={5}>
-            <DeviceBreakdown />
+            <PieChart />
           </Grid>
         </Grid>
       </div>

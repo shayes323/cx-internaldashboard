@@ -24,37 +24,37 @@ import { StateService } from "./StateService";
 import { Link } from "react-router-dom";
 import { NavBar } from "./Components/NavBar";
 import { spacing } from "@material-ui/system";
-import { EstimatedRevenue } from "./Components/TopPanels/EstimatedRevenue";
-import { Requests } from "./Components/TopPanels/Requests";
-import { Impressions } from "./Components/TopPanels/Impressions";
-import { Ecpm } from "./Components/TopPanels/Ecpm";
-import { FillRate } from "./Components/TopPanels/FillRate";
+import { EstimatedRevenue } from "./Components/TopPanels/Publishers/EstimatedRevenue";
+import { Requests } from "./Components/TopPanels/Publishers/Requests";
+import { Impressions } from "./Components/TopPanels/Publishers/Impressions";
+import { Ecpm } from "./Components/TopPanels/Publishers/Ecpm";
+import { FillRate } from "./Components/TopPanels/Publishers/FillRate";
 import { PublishersSpacedPanels } from "./Organization/PublishersSpacedPanels";
 import { PubDailyChart } from "./Components/PubDailyChart";
 import { ZoneFeedData } from "./Components/ZoneFeedData";
 import { PublishersChartsPlacement } from "./Organization/PublishersChartsPlacement";
-import { RemoteFeedsNavBar } from "./Components/RemoteFeedsNavBar";
 import { RFSpacedPanels } from "./Organization/RFSpacedPanels";
-import { RFDailyChart } from "./Components/RFDailyChart";
 import { RFChartsPlacement } from "./Organization/RFChartsPlacement";
+import { PieChart } from "./Components/PieChart";
+import './auth/auth.config';
+import SignIn from './auth/SignIn';
+import AuthProvider from './auth/AuthProvider';
+import { RoutePath } from "./common/route-path";
+import './App.css'
 
-export const Home: any = observer<any, any>(() => {
-  // useEffect(() => {
-  //   new StateService(url)
-  //     .Get()
-  //     .then((jres) => jres.list)
-  //     .then((data) => (stateStore.responseData = data))
-  //     .then(() => console.log(stateStore.responseData))
-  //     .then(() => (stateStore.clickedButton = false));
-  //   console.log(stateStore.responseData);
-  // });
 
-  
 
- 
 
+export const App: any = () => {
   return (
-    <Box style={{ height: '100vh', minHeight: "100vh", backgroundColor: "#F2F3F4"}}>
+ 
+    <Router>
+      <Route path={RoutePath.Login}>
+        <SignIn />
+      </Route>
+      <AuthProvider>
+    <div className="page">
+    <Box style={{minHeight: "110vh"}}>
     <div>
       <Router>
          <div className="PageConstants">
@@ -66,13 +66,13 @@ export const Home: any = observer<any, any>(() => {
               <Redirect exact from="/" to="/publishers" />
             </Route>
             <Route exact path="/publishers">
-              <div style={{backgroundColor: "#F2F3F4"}}>
+              <div>
                 <PublishersSpacedPanels />
               </div>
               <PublishersChartsPlacement />
             </Route>
             <Route exact path="/RemoteFeeds">
-              <div style={{backgroundColor: "#F2F3F4"}}>
+              <div>
                 {/* <RemoteFeedsNavBar /> */}
                 <RFSpacedPanels />
               </div>
@@ -80,26 +80,13 @@ export const Home: any = observer<any, any>(() => {
             </Route>
           </Switch>
         </div>
-      </Router>
+        </Router>
     </div>
     </Box>
-  );
-});
+    </div>
+    </AuthProvider>
+    </Router>
 
-// export const Theme: any = createMuiTheme({
-//   palette: {
-//     primary: {
-//       main: "#FFFFFF",
-//     },
-//     secondary: {
-//       main: "#eceff1",
-//     },
-//   },
-//   typography: {
-//     fontFamily: "Montserrat",
-//     fontWeightLight: 400,
-//     fontWeightRegular: 500,
-//     fontWeightMedium: 600,
-//     fontWeightBold: 700,
-//   },
-// });
+  
+  );
+};

@@ -12,6 +12,7 @@ import {
 import { runInAction, toJS } from "mobx";
 import { observer } from "mobx-react-lite";
 import { Accumulate } from "../AccumulateData";
+import { Utils } from "../Utils";
 
 export const PublishersDropDown: any = observer<any, any>(() => {
   const stateStore = useContext(stateStoreContext);
@@ -19,17 +20,19 @@ export const PublishersDropDown: any = observer<any, any>(() => {
 
   var publishersUrl =
     stateStore.start != "" && stateStore.end != ""
-      ? "https://dev-app-api.catapultx.com/api/v1/reports/publishers/all/" +
-        stateStore.start +
-        "/" +
-        stateStore.end
+      ? Utils.CreateUrl(
+          "publishers",
+          stateStore.start,
+          stateStore.end,
+          "none",
+          "none",
+          "all"
+        )
       : "";
 
   useEffect(() => {
     var pubMap = new Map<string, number>();
-    new StateService(publishersUrl)
-      .Get()
-      .then((jres: any) => jres.list)
+    Utils.FetchList(publishersUrl)
       .then((res) =>
         res.forEach((element) => {
           pubMap.set(element.publisher, element.publisher_id);
@@ -37,9 +40,9 @@ export const PublishersDropDown: any = observer<any, any>(() => {
       )
       .then(() => (stateStore.publishersMap = pubMap))
       .then(() => (stateStore.publishersList = Array.from(pubMap.keys())));
-  });
+  }, [stateStore.start, stateStore.end]);
 
-  function handleChange(e) {
+  function handleChange(e: any) {
     if (e.target.value == "all") {
       setFieldVal("all");
       runInAction(() => (stateStore.selectedPublisher = ""));
@@ -53,8 +56,7 @@ export const PublishersDropDown: any = observer<any, any>(() => {
 
     const pub = stateStore.publishersList[key];
     const pubId = toJS(stateStore.publishersMap).get(pub);
-    runInAction(() => (stateStore.selectedPublisher = pubId)); //getting correct publisherid
-    console.log(stateStore.selectedPublisher);
+    runInAction(() => (stateStore.selectedPublisher = pubId));
   }
 
   return (
@@ -82,6 +84,3 @@ export const PublishersDropDown: any = observer<any, any>(() => {
     </FormControl>
   );
 });
-
-
-
