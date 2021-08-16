@@ -1,6 +1,8 @@
 .MuiTextField-root input {
     padding-top: 9px;
-    padding-bottom: 9px; 
+    padding-bottom: 9px;
+    /* padding-right: ; */
+
   }
   
   .MuiTextField-root label {

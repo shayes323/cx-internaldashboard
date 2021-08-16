@@ -10,14 +10,15 @@ import { Utils } from "../Utils";
 import { CreatePubChart, CreateRFChart } from "./CreateChart";
 import { observe } from "mobx";
 import { ChartData } from "../ChartData";
+import { setConstantValue, setSyntheticTrailingComments } from "typescript";
+import { SettingsInputAntennaTwoTone } from "@material-ui/icons";
+import LoadingOverlay from 'react-loading-overlay';
 
 export const PubDailyChart: any = observer<any, any>(() => {
-  // const loading = useRef(true);
   const stateStore = useContext(stateStoreContext);
   var url: string;
-
-
-
+  const [ready, setReady] = useState<boolean>();
+  const [loading, setLoading] = useState<boolean>();
 
   if (stateStore.page === "publishers") {
     url =
@@ -101,24 +102,13 @@ export const PubDailyChart: any = observer<any, any>(() => {
       .then(() => (stateStore.rfResponseBids = respBids));
   }
 
-  console.log(url);
   useEffect(() => {
     if (stateStore.page === "publishers") {
       GetPubChartData(url);
-
-      //   ChartData.GetDates(url).then(
-      //     (dates: any) => (stateStore.responseDates = dates))
-      //   ChartData.GetRevenue(url).then(
-      //     (rev) => (stateStore.responseRevenue = rev))
-      //   ChartData.GetRequests(url).then(
-      //     (req) => (stateStore.responseRequests = req))
-      //   ChartData.GetImpressions(url)
-      //     .then((imp) => (stateStore.responseImpressions = imp))
-      //     .then(() => console.log(stateStore.responseImpressions));
     } else if (stateStore.page === "remote feeds") {
       GetRFChartData(url);
     }
-  });
+  }, [stateStore.start, stateStore.end, stateStore.selectedPublisher, stateStore.selectedRemotefeed]);
 
   // ChartData.GetDates(url).then(
   //   (dates: any) => (stateStore.responseDates = dates)
@@ -131,20 +121,43 @@ export const PubDailyChart: any = observer<any, any>(() => {
   // );
   // ChartData.GetRespBids(url).then(
   //   (res) => (stateStore.rfResponseBids = res)
-  
+  // var checkExist = setInterval(function () {
+  //   if ($("#highcharts").length) {
+  //     console.log("Exists!");
+  //     clearInterval(checkExist);
+  //   }
+  // }, 100); // check every 100ms
 
+  // useEffect(() => {
+  //   if (stateStore.page === "publishers") {
+  //     CreatePubChart([], [], [], []);
+  //   } else if (stateStore.page === "remote feeds") {
+  //     CreateRFChart([], [], [], []);
+  //   }
 
+  var element = document.getElementById("container");
+  const checkExist: any = () => {
+    setInterval(() => {
+    if (typeof(element) != 'undefined' && element != null) {
+      // <CircularProgress />
+      setReady(true);
+    } else {
+      setReady(false);
+
+    }
+  }, 100);
+}
+  checkExist();
   useEffect(() => {
     if (stateStore.page === "publishers") {
       CreatePubChart([], [], [], []);
     } else if (stateStore.page === "remote feeds") {
       CreateRFChart([], [], [], []);
     }
-
   }, []);
 
   useEffect(() => {
-    setTimeout(() => {
+    if (ready) {
       if (stateStore.page === "publishers") {
         CreatePubChart(
           stateStore.responseDates,
@@ -152,8 +165,8 @@ export const PubDailyChart: any = observer<any, any>(() => {
           stateStore.responseRequests,
           stateStore.responseImpressions
         );
+        stateStore.pageLoading[0] = false;
       } else if (stateStore.page === "remote feeds") {
-        console.log("RF hit");
         console.log(url);
         CreateRFChart(
           stateStore.responseDates,
@@ -161,19 +174,45 @@ export const PubDailyChart: any = observer<any, any>(() => {
           stateStore.rfResponseRequestedBids,
           stateStore.rfResponseBids
         );
-        console.log("RF hit again");
+        stateStore.pageLoading[0] = false;
+        setLoading(false);
       }
-    }, 1500);
-  });
+    }}, [stateStore.responseDates])
 
-  
+
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     if (stateStore.page === "publishers") {
+  //       CreatePubChart(
+  //         stateStore.responseDates,
+  //         stateStore.responseRevenue,
+  //         stateStore.responseRequests,
+  //         stateStore.responseImpressions
+  //       );
+  //     } else if (stateStore.page === "remote feeds") {
+  //       console.log("RF hit");
+  //       console.log(url);
+  //       CreateRFChart(
+  //         stateStore.responseDates,
+  //         stateStore.rfResponseGrossRev,
+  //         stateStore.rfResponseRequestedBids,
+  //         stateStore.rfResponseBids
+  //       );
+  //       console.log("RF hit again");
+  //     }
+  //   }, 1500);
+  // });
+
   return (
     <Box m={2} style={{ marginTop: "-3px" }}>
+      {/* <LoadingOverlay
+      active={loading === false}> */}
       <Paper>
         <div>
           <div id="container"></div>
         </div>
       </Paper>
+      {/* </LoadingOverlay> */}
     </Box>
   );
 });

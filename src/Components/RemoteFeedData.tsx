@@ -8,7 +8,7 @@ import {
 import { useContext, useEffect, useState } from "react";
 import { StateService } from "../StateService";
 import { stateStoreContext } from "../StateStore";
-import { PublisherTableObject, RFTableObject } from "../TableObjects";
+import { PublisherTableObject, RFTableObject, RFTableObjectSelect } from "../TableObjects";
 import {
   Box,
   CircularProgress,
@@ -59,7 +59,7 @@ export const RemoteFeedData = observer<any, any>(() => {
           stateStore.end,
           "remotefeed=" + stateStore.selectedRemotefeed,
           "dsp_seat",
-          "rtb_rem_gross,rtb_rem_imp_requests,rtb_rem_imp_coverage,rtb_rem_top_bids_price_avg,rtb_rem_imp_coverage,rtb_rem_coverage_rate"
+          "dsp_seat,rtb_rem_gross,rtb_rem_gross_ecpm,rtb_pub_impressions,rtb_pub_ctr"
         )
       : Utils.CreateUrl(
           "remotefeeds",
@@ -70,48 +70,51 @@ export const RemoteFeedData = observer<any, any>(() => {
           "rtb_rem_gross,rtb_rem_imp_requests,rtb_rem_imp_coverage,rtb_rem_top_bids_price_avg,rtb_rem_imp_coverage,rtb_rem_coverage_rate"
         );
 
+  function TableHelper(data: any, key: number) : RFTableObject | RFTableObjectSelect {
+    if (stateStore.selectedRemotefeed === "") {
+      return new RFTableObject(
+        key,
+        data.remotefeed,
+        Utils.ToDollar(data.rtb_rem_gross),
+        data.rtb_rem_imp_requests,
+        data.rtb_rem_imp_coverage,
+        Utils.RoundNum(data.rtb_rem_top_bids_price_avg),
+        Utils.ToPercentage(data.rtb_rem_coverage_rate)
+      );
+    } else {
+      return new RFTableObjectSelect(
+        key,
+        data.dsp_seat,
+        Utils.ToDollar(data.rtb_rem_gross),
+        Utils.RoundNum(data.rtb_rem_gross_ecpm),
+        data.rtb_pub_impressions,
+        Utils.RoundNum(data.rtb_pub_ctr)
+      );
+    }
+  }
+
   console.log(tableUrl);
   useEffect(() => {
-    console.log("EFFECT RAN");
     Utils.FetchList(tableUrl)
       .then((data: any) =>
         data.map(
           (data: any, key: number) =>
-            new RFTableObject(
-              key,
-              stateStore.selectedRemotefeed !== ""
-                ? data.dsp_seat
-                : data.remotefeed,
-              data.rtb_rem_gross,
-              data.rtb_rem_imp_requests,
-              data.rtb_rem_imp_coverage,
-              data.rtb_rem_top_bids_price_avg,
-              data.rtb_rem_coverage_rate
-            )
-        )
-      )
-      // .then((test) => console.log(test));
-    .then((info: RFTableObject[]) => (stateStore.rfTableArray = info))
-    .then(() => console.log(stateStore.selectedRemotefeed))
-    .then(() => console.log(stateStore.rfTableArray))
-    .then(() => setReady(true))
+          TableHelper(data, key))
+      ) 
+      .then((info: RFTableObject[]) => (stateStore.rfTableArray = info))
+      .then(() => console.log(stateStore.selectedRemotefeed))
+      .then(() => setReady(true));
   }, [stateStore.start, stateStore.end, stateStore.selectedRemotefeed]);
 
-  // } else {
-  //   new RFTableObject(
-  //     key,
-  //     data.dsp_seat,
-  //     data.rtb_rem_gross,
-  //     data.rtb_rem_imp_requests,
-  //     data.rtb_rem_imp_coverage,
-  //     data.rtb_rem_top_bids_price_avg,
-  //     data.rtb_rem_imp_coverage
-  //   );
-  // }
-
   if (ready == false) {
-    return <div> <CircularProgress/> </div>;
+    return (
+      <div>
+        {" "}
+        <CircularProgress />{" "}
+      </div>
+    );
   } else if (stateStore.selectedRemotefeed === "") {
+    stateStore.pageLoading[1] = false;
     return (
       <div>
         <Box m={2} style={{ marginTop: "-3px" }}>
@@ -125,13 +128,13 @@ export const RemoteFeedData = observer<any, any>(() => {
                 maxBodyHeight: 300,
                 minBodyHeight: 300,
               }}
-              columns={[
-                { field: "remoteFeed", title: "Remote Feed", width: 170 },
-                { field: "grossRevenue", title: "Gross Revenue", width: 140 },
-                { field: "requestedBids", title: "Requested Bids", width: 140 },
-                { field: "bids", title: "Bids", width: 155 },
-                { field: "avgBidEcpm", title: "Average Bid ECPM", width: 130 },
-                { field: "coverage", title: "Coverage", width: 120 },
+              columns={[ //these are not the correct columns
+                { field: "remoteFeed", title: "Remote Feed", width: 70, align: "left" },
+                { field: "grossRevenue", title: "Gross Revenue", width: 70, align: "left" },
+                { field: "requestedBids", title: "Requested Bids", width: 70, align: "left" },
+                { field: "bids", title: "Bids", width: 70, align: "left" },
+                { field: "avgBidEcpm", title: "Average Bid ECPM", width: 70, align: "left" },
+                { field: "coverage", title: "Coverage", width: 70, align: "left" },
               ]}
               data={toJS(stateStore.rfTableArray)}
             />
@@ -140,6 +143,7 @@ export const RemoteFeedData = observer<any, any>(() => {
       </div>
     );
   } else {
+    stateStore.pageLoading[1] = false;
     return (
       <div>
         <Box m={2} style={{ marginTop: "-3px" }}>
@@ -154,12 +158,11 @@ export const RemoteFeedData = observer<any, any>(() => {
                 minBodyHeight: 300,
               }}
               columns={[
-                { field: "dspSeat", title: "DSP Seat", width: 170 },
-                { field: "grossRevenue", title: "Gross Revenue", width: 140 },
-                { field: "requestedBids", title: "Requested Bids", width: 140 },
-                { field: "bids", title: "Bids", width: 155 },
-                { field: "avgBidEcpm", title: "Average Bid ECPM", width: 130 },
-                { field: "coverage", title: "Coverage", width: 120 },
+                { field: "dspSeat", title: "DSP Seat", width: 70, align: "left" },
+                { field: "grossRev", title: "Gross Revenue", width: 70, align: "left" },
+                { field: "grossEcpm", title: "Gross ECPM", width: 70, align: "left" },
+                { field: "netImpressions", title: "Impressions", width: 70, align: "left" },
+                { field: "grossCtr", title: "CTR", width: 70, align: "left" },
               ]}
               data={toJS(stateStore.rfTableArray)}
             />

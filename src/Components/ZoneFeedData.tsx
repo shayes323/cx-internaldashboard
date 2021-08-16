@@ -71,11 +71,11 @@ export const ZoneFeedData = observer<any, any>(() => {
             new PublisherTableObject(
               key,
               data.zone,
-              data.rtb_pub_revenue,
+              Utils.ToDollar(data.rtb_pub_revenue),
               data.rtb_pub_requests,
               data.rtb_pub_impressions,
-              data.rtb_pub_impressions / (data.rtb_pub_requests / 2),
-              data.rtb_pub_ecpm
+              Utils.ToPercentage(data.rtb_pub_impressions / (data.rtb_pub_requests / 2)),
+              Utils.RoundNum(data.rtb_pub_ecpm)
             )
         )
       ) 
@@ -102,13 +102,14 @@ export const ZoneFeedData = observer<any, any>(() => {
             maxBodyHeight: 300,
             minBodyHeight: 300
           }}
+          
           columns={[
-            { field: "zoneFeed", title: "Zone/Feed", width: 170},
-            { field: "revenue", title: "Revenue", width: 140 },
-            { field: "requests", title: "Requests", width: 140 },
-            { field: "impressions", title: "Impressions", width: 155},
-            { field: "fillRate", title: "Fill Rate", width: 130 },
-            { field: "eCpm", title: "Ecpm", width: 120 },
+            { field: "zoneFeed", title: "Zone/Feed", width: 70, align: "left"},
+            { field: "revenue", title: "Revenue", width: 70, align: "left"},
+            { field: "requests", title: "Requests", width: 70, align: "left" },
+            { field: "impressions", title: "Impressions", width: 70, align: "left"},
+            { field: "fillRate", title: "Fill Rate", width: 70, align: "left"},
+            { field: "eCpm", title: "Ecpm", width: 70, align: "left"},
           ]}
           data={toJS(stateStore.publisherTableArray)}
 

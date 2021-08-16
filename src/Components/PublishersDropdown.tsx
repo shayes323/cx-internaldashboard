@@ -34,7 +34,7 @@ export const PublishersDropDown: any = observer<any, any>(() => {
     var pubMap = new Map<string, number>();
     Utils.FetchList(publishersUrl)
       .then((res) =>
-        res.forEach((element) => {
+        res.forEach((element: any) => {
           pubMap.set(element.publisher, element.publisher_id);
         })
       )
@@ -56,6 +56,7 @@ export const PublishersDropDown: any = observer<any, any>(() => {
 
     const pub = stateStore.publishersList[key];
     const pubId = toJS(stateStore.publishersMap).get(pub);
+    console.log(pubId);
     runInAction(() => (stateStore.selectedPublisher = pubId));
   }
 
@@ -66,7 +67,7 @@ export const PublishersDropDown: any = observer<any, any>(() => {
           height: "35px",
           width: "200px",
           backgroundColor: "white",
-          marginLeft: "-30px",
+          // marginLeft: "-30px",
           textAlign: "center",
         }}
         defaultValue={fieldVal}
@@ -76,7 +77,6 @@ export const PublishersDropDown: any = observer<any, any>(() => {
         variant="outlined"
       >
         <MenuItem value="all">all</MenuItem>
-
         {stateStore.publishersList.map((publisher: any, key: any) => (
           <MenuItem value={key}>{publisher}</MenuItem>
         ))}

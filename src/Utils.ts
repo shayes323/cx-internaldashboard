@@ -4,23 +4,23 @@ import { Accumulate } from "./AccumulateData";
 import { StateService } from "./StateService";
 
 export class Utils {
-  public static async FetchList(url: string) : Promise<any> {
+  public static async FetchList(url: string): Promise<any> {
     return new StateService(url).Get().then((jres: any) => jres.list);
   }
 
-  public static async FetchTotal(url: string) : Promise<any>{
+  public static async FetchTotal(url: string): Promise<any> {
     return new StateService(url).Get().then((jres: any) => jres.total);
   }
 
-  public static RoundNum(num: number) {
-    return (Math.round(num * 100) / 100).toFixed(2);;
+  public static RoundNum(num: number) : string {
+    return (Math.round(num * 100) / 100).toFixed(2);
   }
 
-  public static ToDollar(num: number) : string|number {
+  public static ToDollar(num: number): string | number {
     return "$" + (Math.round(num * 100) / 100).toFixed(2);
   }
 
-  public static ToPercentage(num: number) : string|number {
+  public static ToPercentage(num: number): string | number {
     return (Math.round(num * 100) / 100).toFixed(2) + "%";
   }
 
@@ -29,35 +29,86 @@ export class Utils {
     var dd = String(today.getDate()).padStart(2, "0");
     var mm = String(today.getMonth() + 1).padStart(2, "0");
     var yyyy = today.getFullYear();
-    return today = yyyy + "-" + mm + "-" + dd;
+    return (today = yyyy + "-" + mm + "-" + dd);
   }
 
-  public static GetFirstOfMonth() : string {
+  public static GetFirstOfMonth(): string {
     var first: any = new Date();
     var mm = String(first.getMonth() + 1).padStart(2, "0");
     var yyyy = first.getFullYear();
-    return first = yyyy + "-" + mm + "-" + "01";
+    return (first = yyyy + "-" + mm + "-" + "01");
   }
 
-  public static GetDay(date: string) : string {
+  public static GetDay(date: string): string {
     return date.substring(8, 10);
   }
 
-  public static GetMonth(date: string) : string {
+  public static GetMonth(date: string): string {
     return date.substring(5, 7);
   }
 
-  public static GetYear(date: string) : string {
-    return date.substring(0, 4)
+  public static GetYear(date: string): string {
+    return date.substring(0, 4);
   }
 
-
-  public static CreateUrl(callType: string, startDate: string, endDate: string, filters: string = "none", dimensions: string = "none", columns: string = "all") : string {
+  private static CreateTheUrl(
+    callType: string,
+    startDate: string,
+    endDate: string,
+    filters: string,
+    dimensions: string = "none",
+    columns: string = "all"
+  ) {
     var url: string = `https://dev-app-api.catapultx.com/api/v1/reports/${callType}/${startDate}/${endDate}/${filters}/${dimensions}/${columns}`;
     return url;
   }
 
-  public static FormatDate(date: string) : string {
+  public static CreateUrl(
+    callType: string,
+    startDate: string,
+    endDate: string,
+    filters: string = "none",
+    dimensions: string = "none",
+    columns: string = "all"
+  ): string {
+    var url: string = `https://dev-app-api.catapultx.com/api/v1/reports/${callType}/${startDate}/${endDate}/${filters}/${dimensions}/${columns}`;
+    return url;
+  }
+
+  public static GetProperUrl(
+    conditionForNoSelection: boolean,
+    // optionIfNoSelection: string,
+    // optionIfSelection: string,
+    callType: string,
+    startDate: string,
+    endDate: string,
+    filtersIfSelection: string,
+    filtersIfNoSelection: string,
+    dimensions: string = "none",
+    columns: string = "all"
+  ) {
+    if (conditionForNoSelection) {
+      return Utils.CreateTheUrl(
+        callType,
+        startDate,
+        endDate,
+        "none",
+        dimensions,
+        columns
+      );
+    } else {
+      return Utils.CreateTheUrl(
+        callType,
+        startDate,
+        endDate,
+        filtersIfSelection,
+        dimensions,
+        columns
+      );
+    }
+  }
+
+  public static FormatDate(date: string): string {
     var str = date.slice(0, 10);
     const day: string = str.slice(8, 10);
     const month: string = str.slice(5, 7);

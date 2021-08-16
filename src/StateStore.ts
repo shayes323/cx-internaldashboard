@@ -91,6 +91,10 @@ class StateStore {
   public rfPieChartData: number[] = [];
 
 
+
+  public pageLoading: boolean[] = [true, true, true];
+
+
   public dailyChartReload: boolean = false;
   constructor() {
     makeAutoObservable(this);

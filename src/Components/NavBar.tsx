@@ -47,20 +47,22 @@ export const NavBar: any = observer<any, any>(() => {
           </Grid>
           <Grid item xs>
             {stateStore.page === "publishers" ? (
-              <span className="label">Publisher: </span>
+              <span className="publisher">Publisher: </span>
             ) : (
-              <span className="label">Remote Feeds: </span>
+              <span className="publisher">Remote Feeds: </span>
             )}
           </Grid>
           <Grid item xs>
+            <span className="typeAndClassName">
             {stateStore.page === "publishers" ? (
               <PublishersDropDown />
             ) : (
               <RemoteFeedsDropDown />
             )}
+            </span>
           </Grid>
           <Grid item xs>
-            <span className="label">Start Date:</span>
+            <span className="startDate">Start Date:</span>
           </Grid>
           <Grid item xs>
             <StartDateField />

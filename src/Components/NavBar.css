@@ -23,17 +23,30 @@
 
 }
 
-.label {
+
+
+.field {
+    padding: 0px;
+}
+
+.startDate {
     font-family: 'Montserrat', sans-serif;
     font-weight: 600;
-    padding-right: 25px;
     white-space: nowrap;
+    margin-left: 50px;
 }
 
 .endDate {
     padding-right: 100px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    white-space: nowrap;
+    margin-left: -50px;
 }
 
-.field {
-    padding: 0px;
+.publisher {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    margin-right: -50px;
+    white-space: nowrap;
 }

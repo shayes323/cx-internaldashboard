@@ -4,7 +4,7 @@ import react, { useContext, useEffect } from "react";
 import { StateService } from "../../../StateService";
 import { stateStoreContext } from "../../../StateStore";
 import { Utils } from "../../../Utils";
-import '../TopPanels.css';
+import "../TopPanels.css";
 
 export const Ctr = observer<any, any>(() => {
   const stateStore = useContext(stateStoreContext);
@@ -36,12 +36,8 @@ export const Ctr = observer<any, any>(() => {
   });
   return (
     <Paper style={{ height: "100%" }}>
-      <div className="panelTitle">
-      CTR:
-      </div>
-      <div className = "panelInfo">
-        {Utils.ToPercentage(stateStore.ctr)}
-      </div>
+      <div className="panelTitle">CTR:</div>
+      <div className="panelInfo">{Utils.ToPercentage(stateStore.ctr)}</div>
     </Paper>
   );
 });
