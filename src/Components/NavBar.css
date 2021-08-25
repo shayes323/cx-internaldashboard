@@ -10,43 +10,30 @@
     font-family: 'Montserrat', sans-serif;;
     font-weight: 700;
     font-size: x-large;
-    padding-top: 2px;
-    padding-left: 10px;
+    margin-top: 2px;
+    margin-left: 10px;
 }
 
-.leftLabel {
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 600;
-    padding-left: 100px;
-    padding-right: 50px;
+.overall {
+    float: left;
     white-space: nowrap;
+    font-family: 'Montserrat', sans-serif;;
+    font-weight: 500;
 
 }
 
-
-
-.field {
-    padding: 0px;
+.gutterLeft {
+    margin-left: 10vh;
+    display: inline-block;
+    padding-top: 5px;
 }
 
-.startDate {
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 600;
-    white-space: nowrap;
-    margin-left: 50px;
+gutterRight {
+    margin-right: 15vh;
 }
 
-.endDate {
-    padding-right: 100px;
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 600;
-    white-space: nowrap;
-    margin-left: -50px;
-}
-
-.publisher {
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 600;
-    margin-right: -50px;
-    white-space: nowrap;
+.label {
+    margin-left: 5vh;
+    display: inline-block;
+    padding-top: 5px;
 }

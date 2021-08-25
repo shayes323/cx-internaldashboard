@@ -26,7 +26,8 @@ export const NavBar: any = observer<any, any>(() => {
   const stateStore = useContext(stateStoreContext);
 
   return (
-    <>
+    <span>
+    <span className="overall">
       <div className="title">
         <CompanyLogo />
         Insights
@@ -40,45 +41,53 @@ export const NavBar: any = observer<any, any>(() => {
           spacing={2}
         >
           <Grid item xs>
-            <span className="leftLabel">View:</span>
+            <span className="gutterLeft">View:</span>
           </Grid>
           <Grid item xs>
-            <PageSelectDropDown/>
+            <span><PageSelectDropDown/></span>
           </Grid>
           <Grid item xs>
+            <span>
             {stateStore.page === "publishers" ? (
-              <span className="publisher">Publisher: </span>
+              <span className="label">Publisher: </span>
             ) : (
-              <span className="publisher">Remote Feeds: </span>
+              <span className="label">Remote Feeds: </span>
             )}
+            </span>
           </Grid>
           <Grid item xs>
-            <span className="typeAndClassName">
+            <span className="component">
             {stateStore.page === "publishers" ? (
               <PublishersDropDown />
-            ) : (
+              
+            ): (
               <RemoteFeedsDropDown />
             )}
             </span>
           </Grid>
           <Grid item xs>
-            <span className="startDate">Start Date:</span>
+            <span className="label">Start Date:</span>
           </Grid>
           <Grid item xs>
-            <StartDateField />
+            <span><StartDateField /></span>
           </Grid>
           <Grid item xs>
             <span className="label">End Date:</span>
           </Grid>
           <Grid item xs>
-            <EndDateField />
+            <span className="gutterRight"><EndDateField /></span>
           </Grid>
         </Grid>
-        <Divider
-          style={{ marginLeft: "20px", marginRight: "20px", height: "1.5px" }}
-        />
+     
       </Box>
-    </>
+      </span>
+
+      <div style={{clear: "both"}}>
+      <Divider
+          style={{marginRight: "5vh", marginLeft: "5vh", height: "1.5px", alignContent: "center", }}
+        />
+        </div>
+        </span>
   );
 });
 

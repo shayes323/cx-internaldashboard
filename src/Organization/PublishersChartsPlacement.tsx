@@ -1,5 +1,5 @@
 import { Grid } from "@material-ui/core";
-import { PubDailyChart } from "../Components/PubDailyChart";
+import { DailyChart } from "../Components/DailyChart";
 import { PieChart } from "../Components/PieChart";
 import { ZoneFeedData } from "../Components/ZoneFeedData";
 import LoadingOverlay from "react-loading-overlay";
@@ -18,7 +18,7 @@ export function PublishersChartsPlacement() {
           style={{ display: "flexInline", height: 10 }}
         >
           <Grid item xs={12}>
-            <PubDailyChart />
+            <DailyChart />
           </Grid>
           <Grid item xs={7}>
             <ZoneFeedData />

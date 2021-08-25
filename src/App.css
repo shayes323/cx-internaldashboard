@@ -1,4 +1,4 @@
 .page{
     background-color:#F2F3F4 ;
-    background-size: cover;
+    overflow-y: auto;
 }

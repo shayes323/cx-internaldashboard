@@ -1,68 +1,9 @@
+import { SSL_OP_SSLEAY_080_CLIENT_DH_BUG } from "constants";
 import { Accumulate } from "./AccumulateData";
+import { Ecpm } from "./Components/TopPanels/Publishers/Ecpm";
 import { Utils } from "./Utils";
 
 export class ChartData {
-  //   public static async GetDates(url: string) {
-  //     return Utils.FetchList(url)
-  //       .then((data: any) =>
-  //         data.map((data: any) => new DateFormatter(data.date).format())
-  //       )
-  //       .then((dates) => new Set<any>(dates))
-  //       .then((dateSet) => Array.from(dateSet));
-  //   }
-
-  //   public static async GetRevenue(url: string) {
-  //     return Utils.FetchList(url)
-  //       .then((data: any) =>
-  //         data.map((data: any) => new Map([[data.date, data.rtb_pub_revenue]]))
-  //       )
-  //       .then((mapped) => Accumulate.AccumulateByDate(mapped));
-  //   }
-
-  //   public static async GetRequests(url: string) {
-  //     return Utils.FetchList(url)
-  //       .then((data: any) =>
-  //         data.map((data: any) => new Map([[data.date, data.rtb_pub_requests]]))
-  //       )
-  //       .then((mapped) => Accumulate.AccumulateByDate(mapped));
-  //   }
-
-  //   public static async GetImpressions(url: string) {
-  //     return Utils.FetchList(url)
-  //       .then((data: any) =>
-  //         data.map(
-  //           (data: any) => new Map([[data.date, data.rtb_pub_impressions]])
-  //         )
-  //       )
-  //       .then((mapped) => Accumulate.AccumulateByDate(mapped));
-  //   }
-
-  //   public static async GetGrossRev(url: string) {
-  //     return Utils.FetchList(url)
-  //       .then((data: any) =>
-  //         data.map((data: any) => new Map([[data.date, data.rtb_rem_gross]]))
-  //       )
-  //       .then((mapped) => Accumulate.AccumulateByDate(mapped));
-  //   }
-
-  //   public static async GetReqBids(url: string) {
-  //     return Utils.FetchList(url)
-  //       .then((data: any) =>
-  //         data.map(
-  //           (data: any) => new Map([[data.date, data.rtb_rem_imp_requests]])
-  //         )
-  //       )
-  //       .then((mapped) => Accumulate.AccumulateByDate(mapped));
-  //   }
-  //   public static async GetRespBids(url: string) {
-  //     return Utils.FetchList(url)
-  //       .then((data: any) =>
-  //         data.map(
-  //           (data: any) => new Map([[data.date, data.rtb_rem_imp_coverage]])
-  //         )
-  //       )
-  //       .then((mapped) => Accumulate.AccumulateByDate(mapped));
-  //   }
 
   public static async GetDeviceCounts(url: string): Promise<any> {
     var ovrCount: number = 0;
@@ -75,7 +16,7 @@ export class ChartData {
     var gcCount: number = 0;
     return Utils.FetchList(url)
       .then((data: any) =>
-        data.forEach((obj) => {
+        data.forEach((obj: any) => {
           ovrCount++;
           if (obj.device_type === "UNKNOWN") {
             unkCount++;
@@ -108,22 +49,40 @@ export class ChartData {
 
   public static async GetTrafficCounts(url: string): Promise<any> {
     var bannerCount: number = 0;
+    var bannerBids: number = 0;
+    var bannerEcpm: number = 0;
     var videoCount: number = 0;
+    var videoBids: number = 0;
+    var videoEcpm: number = 0;
+    var bannerBids: number = 0;
+    var bannerEcpm: number = 0;
     var nativeCount: number = 0;
+    var nativeBids: number = 0;
+    var nativeEcpm: number = 0;
     var ovrCount: number = 0;
+    var ovrEcpm: number = 0;
+
     return Utils.FetchList(url)
       .then((data: any) =>
-        data.forEach((obj) => {
-          ovrCount++;
+        data.forEach((obj: any) => {
+          ovrCount += obj.rtb_rem_gross;
+          ovrEcpm += obj.rtb_pub_gross_ecpm;
           if (obj.imp_type === "BANNER") {
-            bannerCount++;
+            bannerCount += obj.rtb_rem_gross;
+            bannerBids += obj.rtb_rem_imp_coverage;
+            bannerEcpm += obj.rtb_pub_gross_ecpm
           } else if (obj.imp_type === "VIDEO") {
-            videoCount++;
+            videoCount += obj.rtb_rem_gross;
+            videoBids += obj.rtb_rem_imp_coverage;
+            videoEcpm += obj.rtb_pub_gross_ecpm
           } else if (obj.imp_type === "NATIVE") {
-            nativeCount++;
+            nativeCount += obj.rtb_rem_gross;
+            nativeBids += obj.rtb_rem_coverage;
+            nativeEcpm += obj.rtb_pub_gross_ecpm
+
           }
         })
       )
-      .then(() => [bannerCount, videoCount, nativeCount, ovrCount]);
+      .then(() => [bannerCount, videoCount, nativeCount, ovrCount, bannerBids, videoBids, nativeBids, bannerEcpm, videoEcpm, nativeEcpm, ovrEcpm]);
   }
 }

@@ -1,4 +1,4 @@
-import { Paper, Typography } from "@material-ui/core";
+import { CircularProgress, Paper, Typography } from "@material-ui/core";
 import { observer } from "mobx-react-lite";
 import react, { useContext, useEffect } from "react";
 import { StateService } from "../../../StateService";
@@ -28,17 +28,23 @@ export const GrossRevenue = observer<any, any>(() => {
         );
 
   useEffect(() => {
-    new StateService(grossRevUrl)
-      .Get()
-      .then((jres) => jres.total)
+    Utils.FetchTotal(grossRevUrl)
       .then((total) => total.rtb_rem_gross)
-      .then((data) => (stateStore.rfGrossRevenue = data));
+      .then((data) => (stateStore.rfGrossRevenue = data))
+      .then(() => stateStore.rfStatsFetching[0] = false);
   });
 
   return (
     <Paper style={{ height: "100%" }}>
+
+    {stateStore.rfStatsFetching[0] === true ? (
+      <div className="spinner">
+        <CircularProgress />
+      </div>
+    ) : (
+      <>
       <div className="panelTitle">Gross Revenue:</div>
-      <div className="panelInfo">{Utils.ToDollar(stateStore.rfGrossRevenue)}</div>
+      <div className="panelInfo">{Utils.ToDollar(stateStore.rfGrossRevenue)}</div> </>)}
     </Paper>
   );
 });

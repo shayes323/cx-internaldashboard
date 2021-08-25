@@ -1,4 +1,4 @@
-import { Paper, Typography } from "@material-ui/core";
+import { CircularProgress, Paper, Typography } from "@material-ui/core";
 import { observer } from "mobx-react-lite";
 import react, { useContext, useEffect } from "react";
 import { StateService } from "../../../StateService";
@@ -30,15 +30,23 @@ export const Impressions = observer<any, any>(() => {
   useEffect(() => {
     Utils.FetchTotal(impUrl)
       .then((total) => total.rtb_pub_impressions)
-      .then((data) => (stateStore.impressions = data));
+      .then((data) => (stateStore.impressions = data))
+      .then(() => stateStore.pubStatsFetching[3] = false);
   });
+
 
   return (
     <Paper style={{ height: "100%" }}>
-      <div className="panelTitle">
-      IMPRESSIONS:
-      </div>
-      <div className="panelInfo">{stateStore.impressions}</div>
+      {stateStore.pubStatsFetching[3] === true ? (
+        <div className="spinner">
+          <CircularProgress />
+        </div>
+      ) : (
+        <>
+          <div className="panelTitle">IMPRESSIONS:</div>
+          <div className="panelInfo">{Utils.ToFullNum(stateStore.impressions)}</div>
+        </>
+      )}
     </Paper>
   );
 });

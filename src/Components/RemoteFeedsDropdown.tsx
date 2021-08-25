@@ -67,7 +67,6 @@ export const RemoteFeedsDropDown: any = observer<any, any>(() => {
           height: "35px",
           width: "200px",
           backgroundColor: "white",
-          marginLeft: "-30px",
           textAlign: "center",
 
         }}

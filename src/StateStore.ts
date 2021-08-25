@@ -1,7 +1,7 @@
 import { makeAutoObservable, observable, autorun } from "mobx";
 import { createContext } from "react";
 import { Collection, EnumDeclaration, EnumType } from "typescript";
-import { App } from "./App";
+import App from "./App";
 import { PublisherTableObject, RFTableObject } from "./TableObjects";
 import { Utils } from "./Utils";
 
@@ -93,6 +93,17 @@ class StateStore {
 
 
   public pageLoading: boolean[] = [true, true, true];
+
+
+  public pubStatsFetching: boolean[] = [true, true, true, true, true, true, true];
+
+  public rfStatsFetching: boolean[] = [true, true, true, true, true];
+
+  public ctrFetching: boolean = true;
+
+  public pubChartReady: boolean = false;
+
+  public pieChartReady: boolean = false;
 
 
   public dailyChartReload: boolean = false;

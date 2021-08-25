@@ -1,4 +1,4 @@
-import { Paper, Typography } from "@material-ui/core";
+import { CircularProgress, Paper, Typography } from "@material-ui/core";
 import { observer } from "mobx-react-lite";
 import react, { useContext, useEffect } from "react";
 import { StateService } from "../../../StateService";
@@ -30,13 +30,24 @@ export const Coverage = observer<any, any>(() => {
   useEffect(() => {
     Utils.FetchTotal(coverageUrl)
       .then((total) => total.rtb_rem_coverage_rate)
-      .then((data) => (stateStore.rfCoverage = data));
+      .then((data) => (stateStore.rfCoverage = data))
+      .then(() => (stateStore.rfStatsFetching[4] = false));
   });
 
   return (
     <Paper style={{ height: "100%" }}>
-      <div className="panelTitle">Coverage:</div>
-      <div className="panelInfo">{Utils.ToPercentage(stateStore.rfCoverage)}</div>
+      {stateStore.rfStatsFetching[3] === true ? (
+        <div className="spinner">
+          <CircularProgress />
+        </div>
+      ) : (
+        <>
+          <div className="panelTitle">Coverage:</div>
+          <div className="panelInfo">
+            {Utils.ToPercentage(stateStore.rfCoverage)}
+          </div>
+        </>
+      )}
     </Paper>
   );
 });

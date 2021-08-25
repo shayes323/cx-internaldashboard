@@ -1,4 +1,4 @@
-import { Paper, Typography } from "@material-ui/core";
+import { CircularProgress, Paper, Typography } from "@material-ui/core";
 import { observer } from "mobx-react-lite";
 import react, { useContext, useEffect } from "react";
 import { StateService } from "../../../StateService";
@@ -28,17 +28,24 @@ export const RequestedBids = observer<any, any>(() => {
         );
 
   useEffect(() => {
-    new StateService(reqBidsUrl)
-      .Get()
-      .then((jres) => jres.total)
+    Utils.FetchTotal(reqBidsUrl)
       .then((total) => total.rtb_rem_imp_requests)
-      .then((data) => (stateStore.rfRequestedBids = data));
+      .then((data) => (stateStore.rfRequestedBids = data))
+      .then(() => (stateStore.rfStatsFetching[1] = false));
   });
 
   return (
     <Paper style={{ height: "100%" }}>
-      <div className="panelTitle">Requested Bids:</div>
-      <div className="panelInfo">{stateStore.rfRequestedBids}</div>
+      {stateStore.rfStatsFetching[1] === true ? (
+        <div className="spinner">
+          <CircularProgress />
+        </div>
+      ) : (
+        <>
+          <div className="panelTitle">Requested Bids:</div>
+          <div className="panelInfo">{Utils.ToFullNum(stateStore.rfRequestedBids)}</div>
+        </>
+      )}
     </Paper>
   );
 });

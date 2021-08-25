@@ -1,10 +1,15 @@
-import { Paper, ThemeProvider, Typography } from "@material-ui/core";
+import {
+  CircularProgress,
+  Paper,
+  ThemeProvider,
+  Typography,
+} from "@material-ui/core";
 import { observer } from "mobx-react-lite";
 import react, { useContext, useEffect } from "react";
 import { StateService } from "../../../StateService";
 import { stateStoreContext } from "../../../StateStore";
 import { Utils } from "../../../Utils";
-// import { theme } from "../../Theme";
+import "../../Spinner.css";
 
 export const EstimatedRevenue = observer<any, any>(() => {
   const stateStore = useContext(stateStoreContext);
@@ -32,16 +37,24 @@ export const EstimatedRevenue = observer<any, any>(() => {
     Utils.FetchTotal(estRevUrl)
       .then((total) => total.rtb_rem_gross)
       .then((data) => (stateStore.estimatedRevenue = data))
+      .then(() => (stateStore.pubStatsFetching[0] = false));
   });
+
 
   return (
     <Paper style={{ height: "100%" }}>
-      <div className="panelTitle">
-      ESTIMATED REVENUE:
-      </div>
-      <div className="panelInfo">
-        {Utils.ToDollar(stateStore.estimatedRevenue)}
-      </div>
+      {stateStore.pubStatsFetching[0] === true ? (
+        <div className="spinner">
+          <CircularProgress />
+        </div>
+      ) : (
+        <>
+          <div className="panelTitle">ESTIMATED REVENUE:</div>
+          <div className="panelInfo">
+            {Utils.ToDollar(stateStore.estimatedRevenue)}
+          </div>
+        </>
+      )}
     </Paper>
   );
 });

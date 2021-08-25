@@ -12,17 +12,23 @@ export class Utils {
     return new StateService(url).Get().then((jres: any) => jres.total);
   }
 
-  public static RoundNum(num: number) : string {
-    return (Math.round(num * 100) / 100).toFixed(2);
+  public static RoundNum(num: number) : string | number {
+    return (Math.round(num * 100) / 100).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
 
-  public static ToDollar(num: number): string | number {
-    return "$" + (Math.round(num * 100) / 100).toFixed(2);
+  public static ToDollar(num: number): string {
+     return num !== null ? "$" + num.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits:2}) : null;
+  }
+
+  public static ToFullNum(num: number): string {
+    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
   }
 
   public static ToPercentage(num: number): string | number {
     return (Math.round(num * 100) / 100).toFixed(2) + "%";
   }
+
+
 
   public static GetToday() {
     var today: any = new Date();

@@ -8,7 +8,11 @@ import {
 import { useContext, useEffect, useState } from "react";
 import { StateService } from "../StateService";
 import { stateStoreContext } from "../StateStore";
-import { PublisherTableObject, RFTableObject, RFTableObjectSelect } from "../TableObjects";
+import {
+  PublisherTableObject,
+  RFTableObject,
+  RFTableObjectSelect,
+} from "../TableObjects";
 import {
   Box,
   CircularProgress,
@@ -37,6 +41,7 @@ import SaveAlt from "@material-ui/icons/SaveAlt";
 import Search from "@material-ui/icons/Search";
 import ViewColumn from "@material-ui/icons/ViewColumn";
 import { Utils } from "../Utils";
+import LoadingOverlay from 'react-loading-overlay';
 
 const columns: any[] = [
   { field: "zoneFeed", headerName: "Zone/Feed", width: 170 },
@@ -70,15 +75,18 @@ export const RemoteFeedData = observer<any, any>(() => {
           "rtb_rem_gross,rtb_rem_imp_requests,rtb_rem_imp_coverage,rtb_rem_top_bids_price_avg,rtb_rem_imp_coverage,rtb_rem_coverage_rate"
         );
 
-  function TableHelper(data: any, key: number) : RFTableObject | RFTableObjectSelect {
+  function TableHelper(
+    data: any,
+    key: number
+  ): RFTableObject | RFTableObjectSelect {
     if (stateStore.selectedRemotefeed === "") {
       return new RFTableObject(
         key,
         data.remotefeed,
         Utils.ToDollar(data.rtb_rem_gross),
-        data.rtb_rem_imp_requests,
-        data.rtb_rem_imp_coverage,
-        Utils.RoundNum(data.rtb_rem_top_bids_price_avg),
+        Utils.ToFullNum(data.rtb_rem_imp_requests),
+        Utils.ToFullNum(data.rtb_rem_imp_coverage),
+        Utils.ToDollar(data.rtb_rem_top_bids_price_avg),
         Utils.ToPercentage(data.rtb_rem_coverage_rate)
       );
     } else {
@@ -86,8 +94,8 @@ export const RemoteFeedData = observer<any, any>(() => {
         key,
         data.dsp_seat,
         Utils.ToDollar(data.rtb_rem_gross),
-        Utils.RoundNum(data.rtb_rem_gross_ecpm),
-        data.rtb_pub_impressions,
+        Utils.ToDollar(data.rtb_rem_gross_ecpm),
+        Utils.ToFullNum(data.rtb_pub_impressions),
         Utils.RoundNum(data.rtb_pub_ctr)
       );
     }
@@ -97,58 +105,33 @@ export const RemoteFeedData = observer<any, any>(() => {
   useEffect(() => {
     Utils.FetchList(tableUrl)
       .then((data: any) =>
-        data.map(
-          (data: any, key: number) =>
-          TableHelper(data, key))
-      ) 
+        data.map((data: any, key: number) => TableHelper(data, key))
+      )
       .then((info: RFTableObject[]) => (stateStore.rfTableArray = info))
       .then(() => console.log(stateStore.selectedRemotefeed))
       .then(() => setReady(true));
   }, [stateStore.start, stateStore.end, stateStore.selectedRemotefeed]);
 
-  if (ready == false) {
-    return (
-      <div>
-        {" "}
-        <CircularProgress />{" "}
-      </div>
-    );
-  } else if (stateStore.selectedRemotefeed === "") {
+  if (stateStore.selectedRemotefeed === "") {
     stateStore.pageLoading[1] = false;
     return (
       <div>
         <Box m={2} style={{ marginTop: "-3px" }}>
+        <LoadingOverlay
+          active={ready === false}
+          text={<div className="highcharts-loading-text">Loading...</div>}
+          styles={{
+            overlay: (base: any) => ({
+              ...base,
+              background: "rgba(255, 255, 255, 0.5)",
+              
+            }),
+            
+          }}
+        >
           <Paper>
             <MaterialTable
-              icons={tableIcons}
-              title="Remote Feed Data"
-              options={{
-                search: true,
-                paging: false,
-                maxBodyHeight: 300,
-                minBodyHeight: 300,
-              }}
-              columns={[ //these are not the correct columns
-                { field: "remoteFeed", title: "Remote Feed", width: 70, align: "left" },
-                { field: "grossRevenue", title: "Gross Revenue", width: 70, align: "left" },
-                { field: "requestedBids", title: "Requested Bids", width: 70, align: "left" },
-                { field: "bids", title: "Bids", width: 70, align: "left" },
-                { field: "avgBidEcpm", title: "Average Bid ECPM", width: 70, align: "left" },
-                { field: "coverage", title: "Coverage", width: 70, align: "left" },
-              ]}
-              data={toJS(stateStore.rfTableArray)}
-            />
-          </Paper>
-        </Box>
-      </div>
-    );
-  } else {
-    stateStore.pageLoading[1] = false;
-    return (
-      <div>
-        <Box m={2} style={{ marginTop: "-3px" }}>
-          <Paper>
-            <MaterialTable
+              style={{ whiteSpace: "nowrap" }}
               icons={tableIcons}
               title="Remote Feed Data"
               options={{
@@ -158,15 +141,112 @@ export const RemoteFeedData = observer<any, any>(() => {
                 minBodyHeight: 300,
               }}
               columns={[
-                { field: "dspSeat", title: "DSP Seat", width: 70, align: "left" },
-                { field: "grossRev", title: "Gross Revenue", width: 70, align: "left" },
-                { field: "grossEcpm", title: "Gross ECPM", width: 70, align: "left" },
-                { field: "netImpressions", title: "Impressions", width: 70, align: "left" },
+                {
+                  field: "remoteFeed",
+                  title: "Remote Feed",
+                  width: 70,
+                  align: "left",
+                },
+                {
+                  field: "grossRevenue",
+                  title: "Gross Revenue",
+                  width: 70,
+                  align: "left",
+                  defaultSort: "desc"
+                },
+                {
+                  field: "requestedBids",
+                  title: "Requested Bids",
+                  width: 70,
+                  align: "left",
+                },
+                { field: "bids", title: "Bids", width: 70, align: "left" },
+                {
+                  field: "avgBidEcpm",
+                  title: "Average Bid ECPM",
+                  width: 70,
+                  align: "left",
+                },
+                {
+                  field: "coverage",
+                  title: "Coverage",
+                  width: 70,
+                  align: "left",
+                },
+              ]}
+              data={toJS(stateStore.rfTableArray)}
+            />
+          </Paper>
+          </LoadingOverlay>
+        </Box>
+      </div>
+    );
+  } else {
+    stateStore.pageLoading[1] = false;
+    return (
+      <div>
+        <Box m={2} style={{ marginTop: "-3px" }}>
+        <LoadingOverlay
+          active={ready === false}
+          text={<div className="highcharts-loading-text">Loading...</div>}
+          styles={{
+            overlay: (base: any) => ({
+              ...base,
+              background: "rgba(255, 255, 255, 0.5)",
+              
+            }),
+            
+          }}
+        >
+          <Paper>
+            <MaterialTable
+              style={{ whiteSpace: "nowrap" }}
+              icons={tableIcons}
+              title="Remote Feed Data"
+              options={{
+                sorting: true,
+                search: true,
+                paging: false,
+                maxBodyHeight: 300,
+                minBodyHeight: 300,
+              }}
+              columns={[
+                {
+                  field: "dspSeat",
+                  title: "DSP Seat",
+                  align: "left",
+                  cellStyle: {
+                    textOverflow: "ellipsis",
+                    overflow: "hidden",
+                    whiteSpace: "nowrap",
+                    maxWidth: 20,
+                  },
+                },
+                {
+                  field: "grossRev",
+                  title: "Gross Revenue",
+                  width: 70,
+                  align: "left",
+                  defaultSort: "desc"
+                },
+                {
+                  field: "grossEcpm",
+                  title: "Gross ECPM",
+                  width: 70,
+                  align: "left",
+                },
+                {
+                  field: "netImpressions",
+                  title: "Impressions",
+                  width: 70,
+                  align: "left",
+                },
                 { field: "grossCtr", title: "CTR", width: 70, align: "left" },
               ]}
               data={toJS(stateStore.rfTableArray)}
             />
           </Paper>
+          </LoadingOverlay>
         </Box>
       </div>
     );

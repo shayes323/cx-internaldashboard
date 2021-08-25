@@ -2,8 +2,8 @@ export class PublisherTableObject {
   public id: number;
   public zoneFeed: string;
   public revenue: number | string;
-  public requests: number;
-  public impressions: number;
+  public requests: number | string;
+  public impressions: number | string;
   public fillRate: number | string;
   public eCpm: number | string;
 
@@ -11,8 +11,8 @@ export class PublisherTableObject {
     id: number,
     zoneFeed: string,
     revenue: number | string,
-    requests: number,
-    impressions: number,
+    requests: number | string,
+    impressions: number | string,
     fillRate: number | string,
     eCpm: number | string
   ) {
@@ -30,19 +30,19 @@ export class RFTableObject {
   public id: number;
   public remoteFeed: string;
   public grossRevenue: string | number;
-  public requestedBids: number;
+  public requestedBids: number | string;
   public bids: number | string;
   public avgBidEcpm: string | number;
   public coverage: string | number;
 
   constructor(
-    id?: number,
-    remoteFeed?: string,
-    grossRevenue?: string | number,
-    requestedBids?: number,
-    bids?: number | string,
-    avgBidEcpm?: string | number,
-    coverage?: string | number
+    id: number,
+    remoteFeed: string,
+    grossRevenue: string | number,
+    requestedBids: number | string,
+    bids: number | string,
+    avgBidEcpm: string | number,
+    coverage: string | number
   ) {
     this.id = id;
     this.remoteFeed = remoteFeed;
@@ -55,12 +55,12 @@ export class RFTableObject {
 }
 
 export class RFTableObjectSelect {
-  public id?: number;
-  public dspSeat?: number | string;
-  public grossRev?: number | string;
-  public grossEcpm?: number | string;
-  public netImpressions?: number | string;
-  public grossCtr?: number | string;
+  public id: number;
+  public dspSeat: number | string;
+  public grossRev: number | string;
+  public grossEcpm: number | string;
+  public netImpressions: number | string;
+  public grossCtr: number | string;
 
   constructor(
     id: number,

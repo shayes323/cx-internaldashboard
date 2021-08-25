@@ -18,11 +18,12 @@ export function PageSelectDropDown() {
 
   const history = useHistory();
 
-  const handleChange = (e) => {
+  const handleChange = (e: any) => {
     console.log(e.target.value);
     runInAction(() => stateStore.page = e.target.value);
     runInAction(() => stateStore.pieChartReload = false);
     runInAction(() => stateStore.dailyChartReload = false);
+    runInAction(() => stateStore.pageLoading = [true, true, true]);
     let path = e.target.value as string;
     history.push(path);
   
@@ -35,7 +36,6 @@ export function PageSelectDropDown() {
           style={{
             height: "35px",
             backgroundColor: "white",
-            // marginLeft: "-35px",
           }}
           displayEmpty
           onChange={handleChange}
@@ -43,12 +43,12 @@ export function PageSelectDropDown() {
           renderValue={() => stateStore.page === "publishers" ? "publishers" : "remote feeds"}
           variant="outlined"
         >
-          <Link value="publishers" to="/publishers">
+          <Link to="/publishers">
             <MenuItem  value="publishers" style={{ fontSize: 15 }}>
               publishers
             </MenuItem>
           </Link>
-          <Link value="remote feeds" to="/remotefeeds">
+          <Link to="/remotefeeds">
             <MenuItem value="remote feeds" style={{ fontSize: 15 }}>
               remote feeds
             </MenuItem>
@@ -58,19 +58,3 @@ export function PageSelectDropDown() {
     </div>
   );
 }
-
-//     <FormControl>
-//         <TextField
-//         select
-//         label="Report Type"
-//         id="type">
-
-//         <MenuItem>zones</MenuItem>
-//         <MenuItem>publishers</MenuItem>
-//         <MenuItem>remotefeeds</MenuItem>
-//         </TextField>
-
-//     </FormControl>
-
-//   );
-// }
