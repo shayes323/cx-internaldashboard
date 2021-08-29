@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
-import App from "./App";
+import { App } from "./App";
 import { ZoneFeedData } from "./Components/ZoneFeedData";
 import { RemoteFeedsDropDown } from "./Components/RemoteFeedsDropdown";
 import { EstimatedRevenue } from "./Components/TopPanels/Publishers/EstimatedRevenue";

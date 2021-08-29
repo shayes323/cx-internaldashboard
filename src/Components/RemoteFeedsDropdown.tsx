@@ -40,7 +40,7 @@ export const RemoteFeedsDropDown: any = observer<any, any>(() => {
         })
       )
       .then(() => (stateStore.remotefeedsMap = feedMap))
-      .then(() => (stateStore.remotefeedsList = Array.from(feedMap.keys())));
+      .then(() => (stateStore.remotefeedsList = Array.from(feedMap.keys()).sort()));
   });
 
   function handleChange(e: any) {

@@ -149,7 +149,7 @@ export const RemoteFeedData = observer<any, any>(() => {
                 },
                 {
                   field: "grossRevenue",
-                  title: "Gross Revenue",
+                  title: "Estimated Gross Revenue",
                   width: 70,
                   align: "left",
                   defaultSort: "desc"

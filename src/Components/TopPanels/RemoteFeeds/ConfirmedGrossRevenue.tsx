@@ -5,7 +5,7 @@ import { StateService } from "../../../StateService";
 import { stateStoreContext } from "../../../StateStore";
 import { Utils } from "../../../Utils";
 
-export const GrossRevenue = observer<any, any>(() => {
+export const ConfirmedGrossRevenue = observer<any, any>(() => {
   const stateStore = useContext(stateStoreContext);
 
   const grossRevUrl: string =
@@ -16,7 +16,7 @@ export const GrossRevenue = observer<any, any>(() => {
           stateStore.end,
           "none",
           "none",
-          "rtb_rem_gross"
+          "rtb_pub_revenue"
         )
       : Utils.CreateUrl(
           "remotefeeds",
@@ -24,27 +24,27 @@ export const GrossRevenue = observer<any, any>(() => {
           stateStore.end,
           "remotefeed=" + stateStore.selectedRemotefeed,
           "none",
-          "rtb_rem_gross"
+          "rtb_pub_revenue"
         );
 
   useEffect(() => {
     Utils.FetchTotal(grossRevUrl)
-      .then((total) => total.rtb_rem_gross)
-      .then((data) => (stateStore.rfGrossRevenue = data))
-      .then(() => stateStore.rfStatsFetching[0] = false);
+      .then((total) => total.rtb_pub_revenue)
+      .then((data) => (stateStore.rfConfirmedGrossRevenue = data))
+      .then(() => stateStore.rfStatsFetching[5] = false);
   });
 
   return (
     <Paper style={{ height: "100%" }}>
 
-    {stateStore.rfStatsFetching[0] === true ? (
+    {stateStore.rfStatsFetching[5] === true ? (
       <div className="spinner">
         <CircularProgress />
       </div>
     ) : (
       <>
-      <div className="panelTitle">Estimated Gross Revenue:</div>
-      <div className="panelInfo">{Utils.ToDollar(stateStore.rfGrossRevenue)}</div> </>)}
+      <div className="panelTitle">Confirmed Gross Revenue:</div>
+      <div className="panelInfo">{Utils.ToDollar(stateStore.rfConfirmedGrossRevenue)}</div> </>)}
     </Paper>
   );
 });

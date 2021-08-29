@@ -19,27 +19,33 @@ import { Utils } from "../Utils";
 export function StartDateField() {
   const stateStore = useContext(stateStoreContext);
 
-  function Valid() {
-    if (Utils.GetYear(stateStore.start) > Utils.GetYear(stateStore.end)) {
-      return false;
-    } else if (
-      Utils.GetYear(stateStore.start) === Utils.GetYear(stateStore.end) &&
-      Utils.GetMonth(stateStore.start) > Utils.GetMonth(stateStore.end)
-    ) {
-      return false;
-    } else if (
-      Utils.GetYear(stateStore.start) === Utils.GetYear(stateStore.end) &&
-      Utils.GetMonth(stateStore.start) === Utils.GetMonth(stateStore.end) &&
-      Utils.GetDay(stateStore.start) > Utils.GetDay(stateStore.end)
-    ) {
-      return false;
-    }
-    return true;
-  }
+  // function Valid() {
+  //   if (Utils.GetYear(stateStore.start) > Utils.GetYear(stateStore.end)) {
+  //     return false;
+  //   } else if (
+  //     Utils.GetYear(stateStore.start) === Utils.GetYear(stateStore.end) &&
+  //     Utils.GetMonth(stateStore.start) > Utils.GetMonth(stateStore.end)
+  //   ) {
+  //     return false;
+  //   } else if (
+  //     Utils.GetYear(stateStore.start) === Utils.GetYear(stateStore.end) &&
+  //     Utils.GetMonth(stateStore.start) === Utils.GetMonth(stateStore.end) &&
+  //     Utils.GetDay(stateStore.start) > Utils.GetDay(stateStore.end)
+  //   ) {
+  //     return false;
+  //   }
+  //   return true;
+  // }
 
   function HandleStartChange(e: any) {
     runInAction(() => (stateStore.start = e.target.value));
+    stateStore.setToLocalStorage(stateStore.startKey, e.target.value);
+
   }
+
+  // useEffect(() => {
+  //   stateStore.setToLocalStorage(stateStore.startKey, stateStore.start);
+  // }, [stateStore.start]);
 
   return (
     <TextField
@@ -63,6 +69,9 @@ export function EndDateField() {
 
   function HandleEndChange(e: any) {
     runInAction(() => (stateStore.end = e.target.value));
+    stateStore.setToLocalStorage(stateStore.endKey, e.target.value);
+
+
   }
   return (
     <span className="endDate">

@@ -55,7 +55,7 @@ export const ZoneFeedData = observer<any, any>(() => {
           stateStore.end,
           "none",
           "none",
-          "rtb_pub_impressions,rtb_pub_requests,rtb_pub_revenue,rtb_pub_ecpm"
+          "rtb_pub_impressions,rtb_pub_requests,rtb_pub_gross,rtb_pub_ecpm"
         )
       : Utils.CreateUrl(
           "zones",
@@ -63,7 +63,7 @@ export const ZoneFeedData = observer<any, any>(() => {
           stateStore.end,
           "publisher=" + stateStore.selectedPublisher,
           "none",
-          "rtb_pub_impressions,rtb_pub_requests,rtb_pub_revenue,rtb_pub_ecpm"
+          "rtb_pub_impressions,rtb_pub_requests,rtb_pub_gross,rtb_pub_ecpm"
         );
 
   useEffect(() => {
@@ -77,7 +77,7 @@ export const ZoneFeedData = observer<any, any>(() => {
             new PublisherTableObject(
               key,
               data.zone,
-              Utils.ToDollar(data.rtb_pub_revenue),
+              Utils.ToDollar(data.rtb_pub_gross),
               Utils.ToFullNum(data.rtb_pub_requests),
               Utils.ToFullNum(data.rtb_pub_impressions),
               Utils.ToPercentage(
@@ -158,7 +158,7 @@ export const ZoneFeedData = observer<any, any>(() => {
                 },
                 {
                   field: "revenue",
-                  title: "Revenue",
+                  title: "Estimated Pub Revenue",
                   width: 70,
                   align: "left",
                   defaultSort: "desc",

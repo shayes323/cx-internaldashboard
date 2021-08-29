@@ -6,6 +6,7 @@ import { FillRate } from "../Components/TopPanels/Publishers/FillRate";
 import { Impressions } from "../Components/TopPanels/Publishers/Impressions";
 import { Requests } from "../Components/TopPanels/Publishers/Requests";
 import { WinRate } from "../Components/TopPanels/Publishers/WinRate";
+import { ConfirmedRevenue } from "../Components/TopPanels/Publishers/ConfirmedRevenue";
 
 export function PublishersSpacedPanels() {
   return (
@@ -19,6 +20,9 @@ export function PublishersSpacedPanels() {
       >
         <Grid item xs>
           <EstimatedRevenue />
+        </Grid>
+        <Grid item xs>
+          <ConfirmedRevenue />
         </Grid>
         <Grid item xs>
           <Requests />

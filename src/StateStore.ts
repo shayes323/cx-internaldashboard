@@ -1,19 +1,25 @@
 import { makeAutoObservable, observable, autorun } from "mobx";
 import { createContext } from "react";
 import { Collection, EnumDeclaration, EnumType } from "typescript";
-import App from "./App";
+import {App} from "./App";
 import { PublisherTableObject, RFTableObject } from "./TableObjects";
 import { Utils } from "./Utils";
 
 class StateStore {
+  readonly startKey: string = "startKey";
+  readonly endKey: string = "endKey";
+  readonly selectedRFKey: string = "selectedRFKey";
+  readonly selectedPubKey: string = "selectedPubKey";
+  readonly currentPageKey: string = "currentPageKey";
+
+
+
+
+  // public start: string = this.getFromLocalStorage(this.startKey) || Utils.GetFirstOfMonth();
+  // public end: string = this.getFromLocalStorage(this.endKey) || Utils.GetToday();
+
   public start: string = Utils.GetFirstOfMonth();
-
   public end: string = Utils.GetToday();
-
-  public clickedButton: boolean = false;
-
-  public reportType: any ="";
-
   public responseData: any[] = [];
 
   public responseDates: any[] = [];
@@ -21,6 +27,7 @@ class StateStore {
   public responseRevenue: any[] = [];
 
   public responseImpressions: any[] = [];
+
   public responseRequests: any[] = [];
 
   public responseFillRate: any[] = [];
@@ -43,11 +50,11 @@ class StateStore {
 
   public ecpm: any = "";
 
+  public confirmedRevenue: any = "";
+
   public selectedPublisher: any = "";
 
   public publisherTableArray: PublisherTableObject[];
-
-  public tableUrl: string;
 
   public publisherTableObject: PublisherTableObject;
 
@@ -56,6 +63,8 @@ class StateStore {
   public ctr: any = "";
 
   public rfGrossRevenue: any = "";
+
+  public rfConfirmedGrossRevenue: any = "";
 
   public rfRequestedBids: any = "";
 
@@ -69,9 +78,6 @@ class StateStore {
   public remotefeedsList: any[] = [];
   public selectedRemotefeed: any = "";
 
-  public chartX: any = "";
-  public chartPrimaryY: any = "";
-  public chartSecondaryY: any = "";
 
   //RFDailyChart
   public rfResponseDates: any[] = [];
@@ -81,7 +87,7 @@ class StateStore {
 
   public rfTableArray: RFTableObject[] = [];
 
-  public page: any = "publishers"
+  public page: any = "publishers";
 
   public deviceCounts: number[];
 
@@ -95,18 +101,37 @@ class StateStore {
   public pageLoading: boolean[] = [true, true, true];
 
 
-  public pubStatsFetching: boolean[] = [true, true, true, true, true, true, true];
+  public pubStatsFetching: boolean[] = [true, true, true, true, true, true, true, true];
 
-  public rfStatsFetching: boolean[] = [true, true, true, true, true];
-
-  public ctrFetching: boolean = true;
-
+  public rfStatsFetching: boolean[] = [true, true, true, true, true, true];
   public pubChartReady: boolean = false;
 
   public pieChartReady: boolean = false;
 
 
+
+
   public dailyChartReload: boolean = false;
+
+
+
+  public setToLocalStorage(key: string, data: any): void {
+    localStorage.setItem(key, JSON.stringify(data));
+  }
+
+  public getFromLocalStorage(key: string) : any {
+    console.log(this.start);
+    console.log(this.end);
+    const data = localStorage.getItem(key);
+    if (!data) {
+      return null;
+    }
+    return JSON.parse(data);
+  }
+
+
+
+
   constructor() {
     makeAutoObservable(this);
   }

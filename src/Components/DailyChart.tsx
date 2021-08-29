@@ -31,7 +31,7 @@ export const DailyChart: any = observer<any, any>(() => {
             stateStore.end,
             "none",
             "none",
-            "rtb_pub_impressions,rtb_pub_requests,rtb_pub_revenue"
+            "rtb_pub_impressions,rtb_pub_requests,rtb_pub_gross"
           )
         : Utils.CreateUrl(
             "dates",
@@ -39,7 +39,7 @@ export const DailyChart: any = observer<any, any>(() => {
             stateStore.end,
             "publisher=" + stateStore.selectedPublisher,
             "none",
-            "rtb_pub_impressions,rtb_pub_requests,rtb_pub_revenue"
+            "rtb_pub_impressions,rtb_pub_requests,rtb_pub_gross"
           );
   } else if (stateStore.page === "remote feeds") {
     url =
@@ -73,7 +73,7 @@ export const DailyChart: any = observer<any, any>(() => {
       .then((arr) => {
         for (let i: number = 0; i < arr.length; i++) {
           dates[i] = Utils.FormatDate(arr[i].date);
-          rev[i] = arr[i].rtb_pub_revenue;
+          rev[i] = arr[i].rtb_pub_gross;
           req[i] = arr[i].rtb_pub_requests;
           imp[i] = arr[i].rtb_pub_impressions;
         }
@@ -143,6 +143,8 @@ export const DailyChart: any = observer<any, any>(() => {
           stateStore.responseImpressions
         );
         stateStore.pageLoading[0] = false;
+        setLoading(false);
+
       } else if (stateStore.page === "remote feeds") {
         console.log(url);
         CreateRFChart(
@@ -209,7 +211,7 @@ function CreatePubChart(
       {
         // Secondary yAxis
         title: {
-          text: "Revenue",
+          text: "Estimated Pub Revenue",
           style: {
             color: Highcharts.getOptions().colors[1],
           },
@@ -238,7 +240,7 @@ function CreatePubChart(
     series: [
       {
         type: "column",
-        name: "Revenue",
+        name: "Estimated Pub Revenue",
         data: responseRevenue,
         color: "#7DC87E",
         yAxis: 1,
@@ -334,7 +336,7 @@ function CreateRFChart(
       {
         // Secondary yAxis
         title: {
-          text: "Gross Revenue",
+          text: "Estimated Gross Revenue",
           style: {
             color: Highcharts.getOptions().colors[1],
           },

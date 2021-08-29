@@ -22,7 +22,7 @@ export const EstimatedRevenue = observer<any, any>(() => {
           stateStore.end,
           "none",
           "none",
-          "rtb_rem_gross"
+          "rtb_pub_gross"
         )
       : Utils.CreateUrl(
           "publishers",
@@ -30,12 +30,12 @@ export const EstimatedRevenue = observer<any, any>(() => {
           stateStore.end,
           "publisher=" + stateStore.selectedPublisher,
           "none",
-          "rtb_rem_gross"
+          "rtb_pub_gross"
         );
 
   useEffect(() => {
     Utils.FetchTotal(estRevUrl)
-      .then((total) => total.rtb_rem_gross)
+      .then((total) => total.rtb_pub_gross)
       .then((data) => (stateStore.estimatedRevenue = data))
       .then(() => (stateStore.pubStatsFetching[0] = false));
   });
@@ -49,7 +49,7 @@ export const EstimatedRevenue = observer<any, any>(() => {
         </div>
       ) : (
         <>
-          <div className="panelTitle">ESTIMATED REVENUE:</div>
+          <div className="panelTitle">ESTIMATED PUB REVENUE:</div>
           <div className="panelInfo">
             {Utils.ToDollar(stateStore.estimatedRevenue)}
           </div>

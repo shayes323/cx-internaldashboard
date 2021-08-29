@@ -11,6 +11,7 @@ import { Coverage } from "../Components/TopPanels/RemoteFeeds/Coverage";
 import { GrossRevenue } from "../Components/TopPanels/RemoteFeeds/GrossRevenue";
 import { RequestedBids } from "../Components/TopPanels/RemoteFeeds/RequestedBids";
 import { WinRate } from "../Components/TopPanels/Publishers/WinRate";
+import { ConfirmedGrossRevenue } from "../Components/TopPanels/RemoteFeeds/ConfirmedGrossRevenue";
 
 export function RFSpacedPanels() {
   return (
@@ -24,6 +25,9 @@ export function RFSpacedPanels() {
       >
         <Grid item xs>
           <GrossRevenue />
+        </Grid>
+        <Grid item xs>
+          <ConfirmedGrossRevenue />
         </Grid>
         <Grid item xs>
           <RequestedBids />

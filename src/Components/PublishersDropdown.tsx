@@ -39,7 +39,7 @@ export const PublishersDropDown: any = observer<any, any>(() => {
         })
       )
       .then(() => (stateStore.publishersMap = pubMap))
-      .then(() => (stateStore.publishersList = Array.from(pubMap.keys())));
+      .then(() => (stateStore.publishersList = Array.from(pubMap.keys()).sort())).then(() => console.log(stateStore.publishersList));
   }, [stateStore.start, stateStore.end]);
 
   function handleChange(e: any) {
