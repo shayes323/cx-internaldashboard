@@ -47,6 +47,7 @@ export const RemoteFeedsDropDown: any = observer<any, any>(() => {
       setFieldVal("all");
       runInAction(() => (stateStore.selectedRemotefeed = ""));
       runInAction(() => stateStore.pageLoading = [true, true, true]);
+      runInAction(() => stateStore.selectedRemoteFeedName = "all");
       stateStore.setToLocalStorage(stateStore.selectedRFNameKey, "all");
       return;
     }
@@ -78,7 +79,7 @@ export const RemoteFeedsDropDown: any = observer<any, any>(() => {
         }}
         defaultValue={fieldVal}
         displayEmpty={true}
-        renderValue={() => (fieldVal === "all" ? "all" : stateStore.selectedRemoteFeedName)}
+        renderValue={() => (stateStore.selectedRemoteFeedName)}
         onChange={handleChange}
         variant="outlined"
       >
