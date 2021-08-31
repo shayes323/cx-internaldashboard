@@ -4,23 +4,25 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { stateStoreContext } from "../StateStore";
 import { StateService } from "../StateService";
 import { DataGrid } from "@material-ui/data-grid";
-import { Accumulate } from "../AccumulateData";
 import { Box, CircularProgress, Paper } from "@material-ui/core";
 import { Utils } from "../Utils";
-import { CreateRFChart } from "./CreateChart";
-import { observe } from "mobx";
+import { observe, trace } from "mobx";
 import { ChartData } from "../ChartData";
 import { setConstantValue, setSyntheticTrailingComments } from "typescript";
 import { SettingsInputAntennaTwoTone } from "@material-ui/icons";
-import LoadingOverlay from 'react-loading-overlay';
+import LoadingOverlay from "react-loading-overlay";
 
 export const DailyChart: any = observer<any, any>(() => {
   const stateStore = useContext(stateStoreContext);
-  var url: string;
   const [ready, setReady] = useState<boolean>();
-  const [loading, setLoading] = useState<boolean>();
-  
-  
+
+  trace(true);
+
+  console.log(stateStore.page);
+  console.log(stateStore.pageLoading[0]);
+
+  var url: string;
+
 
   if (stateStore.page === "publishers") {
     url =
@@ -62,13 +64,16 @@ export const DailyChart: any = observer<any, any>(() => {
           );
   }
 
+
+  console.log(url);
+  console.log(ready);
+
   async function GetPubChartData(url: string) {
     var dates: string[] = [];
     var rev: number[] = [];
     var req: number[] = [];
     var imp: number[] = [];
-    
-    
+
     return Utils.FetchList(url)
       .then((arr) => {
         for (let i: number = 0; i < arr.length; i++) {
@@ -111,19 +116,23 @@ export const DailyChart: any = observer<any, any>(() => {
     } else if (stateStore.page === "remote feeds") {
       GetRFChartData(url);
     }
-  }, [stateStore.start, stateStore.end, stateStore.selectedPublisher, stateStore.selectedRemotefeed]);
+  }, [
+    stateStore.start,
+    stateStore.end,
+    stateStore.selectedPublisher,
+    stateStore.selectedRemotefeed,
+  ]);
 
   var element = document.getElementById("container");
   const checkExist: any = () => {
     setInterval(() => {
-    if (typeof(element) !== 'undefined' && element !== null) {
-      setReady(true);
-    } else {
-      setReady(false);
-
-    }
-  }, 100);
-}
+      if (typeof element !== "undefined" && element !== null) {
+        setReady(true);
+      } else {
+        setReady(false);
+      }
+    }, 100);
+  };
   checkExist();
   useEffect(() => {
     if (stateStore.page === "publishers") {
@@ -134,7 +143,9 @@ export const DailyChart: any = observer<any, any>(() => {
   }, []);
 
   useEffect(() => {
-    if (ready) {
+    console.log("before ready hit");
+    if (ready || typeof(ready) === 'undefined') {
+      console.log("after ready hit");
       if (stateStore.page === "publishers") {
         CreatePubChart(
           stateStore.responseDates,
@@ -143,10 +154,7 @@ export const DailyChart: any = observer<any, any>(() => {
           stateStore.responseImpressions
         );
         stateStore.pageLoading[0] = false;
-        setLoading(false);
-
       } else if (stateStore.page === "remote feeds") {
-        console.log(url);
         CreateRFChart(
           stateStore.responseDates,
           stateStore.rfResponseGrossRev,
@@ -154,270 +162,268 @@ export const DailyChart: any = observer<any, any>(() => {
           stateStore.rfResponseBids
         );
         stateStore.pageLoading[0] = false;
-        setLoading(false);
       }
-    }}, [stateStore.responseDates, stateStore.page, stateStore.selectedRemotefeed, stateStore.selectedPublisher])
-
-    
-function CreatePubChart(
-  responseDates: any,
-  responseRevenue: any[],
-  responseRequests: any[],
-  responseImpressions: any[]
-) {
-
-  Highcharts.setOptions({
-    lang: {
-      thousandsSep: ','
     }
-  });
-  return Highcharts.chart("container", {
-    exporting: {
-      enabled: false,
-    },
-    chart: {
-      animation: false,
-      height: (4 / 16) * 100 + "%",
-      events: {
-        load() {
-          const chart = this;
-          chart.showLoading('Loading...');
-          setInterval(function() {
-            if (stateStore.pageLoading[0] === false) {
-            chart.hideLoading();
-            }
-          }, 1000)
+  }, [
+    stateStore.start,
+    stateStore.end,
+    stateStore.page,
+    stateStore.selectedRemotefeed,
+    stateStore.selectedPublisher,
+    stateStore.responseDates,
+  ]);
 
-        }
-      },
-    },
-    title: {
-      text: "",
-    },
-    xAxis: {
-      categories: Array.from(responseDates),
-      // tickInterval : 5
-    },
-    yAxis: [
-      {
-        // Primary yAxis
-        title: {
-          text: "Impressions/Requests",
-          style: {
-            color: Highcharts.getOptions().colors[1],
-          },
-        },
-      },
-      {
-        // Secondary yAxis
-        title: {
-          text: "Estimated Pub Revenue",
-          style: {
-            color: Highcharts.getOptions().colors[1],
-          },
-        },        
-        labels: {
-          format: "${value}",
-          style: {
-            color: Highcharts.getOptions().colors[1],
-          },
-        },
-        opposite: true,
-      },
-    ],
-    tooltip: {
-      shared: true,
-      valueDecimals: 2,
-      // formatter: function () {
-      //   return this.y ? "$" + this.y: "" + this.x;
-      // }
-    },
-    plotOptions: {
-      areaspline: {
-        fillOpacity: 0.7,
-      },
-    },
-    series: [
-      {
-        type: "column",
-        name: "Estimated Pub Revenue",
-        data: responseRevenue,
-        color: "#7DC87E",
-        yAxis: 1,
-        dataLabels: {
-          formatter: function () {
-            return "$" + Utils.RoundNum(this.y);
-          },
-          enabled: true,
-        },
-      },
-      {
-        type: "areaspline",
-        name: "Requests",
-        color: "black",
-        opacity: 0.6,
-        data: responseRequests,
-        marker: {
-          lineWidth: 1,
-        },
-        label: {
-          enabled: false,
-        },
-      },
-      {
-        type: "areaspline",
-        name: "Impressions",
-        color: "#7DABC8",
-        data: responseImpressions,
-        marker: {
-          lineWidth: 1,
-        },
-        label: {
-          enabled: false,
-        },
-      },
-    ],
-  });
-}
-
-function CreateRFChart(
-  responseDates: any,
-  responseGrossRev: any[],
-  responseReqBids: any[],
-  responseBids: any[]
-) {
-
+  function CreatePubChart(
+    responseDates: any,
+    responseRevenue: any[],
+    responseRequests: any[],
+    responseImpressions: any[]
+  ) {
     Highcharts.setOptions({
-    lang: {
-      thousandsSep: ','
-    }
-  });
+      plotOptions: {
+        series: {
+          animation: false,
+        },
+      },
+      lang: {
+        thousandsSep: ",",
+      },
+    });
 
+    return Highcharts.chart("container", {
+      exporting: {
+        enabled: false,
+      },
 
-  return Highcharts.chart("container", {
-    exporting: {
-      enabled: false,
-    },
-  
+      chart: {
+        animation: false,
+        height: (4 / 16) * 100 + "%",
+        events: {
+          load() {
+            const chart = this;
+            chart.showLoading("Loading...");
+            setInterval(function () {
+              if (stateStore.pageLoading[0] === false) {
+                chart.hideLoading();
+              }
+            }, 1000);
+          },
+        },
+      },
+      title: {
+        text: "",
+      },
+      xAxis: {
+        categories: Array.from(responseDates),
+        // tickInterval : 5
+      },
+      yAxis: [
+        {
+          // Primary yAxis
+          title: {
+            text: "Impressions/Requests",
+            style: {
+              color: Highcharts.getOptions().colors[1],
+            },
+          },
+        },
+        {
+          // Secondary yAxis
+          title: {
+            text: "Estimated Pub Revenue",
+            style: {
+              color: Highcharts.getOptions().colors[1],
+            },
+          },
+          labels: {
+            format: "${value}",
+            style: {
+              color: Highcharts.getOptions().colors[1],
+            },
+          },
+          opposite: true,
+        },
+      ],
+      tooltip: {
+        shared: true,
+        valueDecimals: 2,
+      },
+      plotOptions: {
+        areaspline: {
+          fillOpacity: 0.7,
+        },
+      },
+      series: [
+        {
+          type: "column",
+          name: "Estimated Pub Revenue",
+          data: responseRevenue,
+          color: "#7DC87E",
+          yAxis: 1,
+          dataLabels: {
+            formatter: function () {
+              return "$" + Utils.RoundNum(this.y);
+            },
+            enabled: true,
+          },
+        },
+        {
+          type: "areaspline",
+          name: "Requests",
+          color: "black",
+          opacity: 0.6,
+          data: responseRequests,
+          marker: {
+            lineWidth: 1,
+          },
+          label: {
+            enabled: false,
+          },
+        },
+        {
+          type: "areaspline",
+          name: "Impressions",
+          color: "#7DABC8",
+          data: responseImpressions,
+          marker: {
+            lineWidth: 1,
+          },
+          label: {
+            enabled: false,
+          },
+        },
+      ],
+    });
+  }
+
+  function CreateRFChart(
+    responseDates: any,
+    responseGrossRev: any[],
+    responseReqBids: any[],
+    responseBids: any[]
+  ) {
+    Highcharts.setOptions({
+      plotOptions: {
+        series: {
+          animation: false,
+        },
+      },
+      lang: {
+        thousandsSep: ",",
+      },
+    });
+
     
-    chart: {
-      animation: false,
-      height: (4 / 16) * 100 + "%",
-      events: {
-        load() {
-          const chart = this;
-          chart.showLoading('Loading...');
-          setInterval(function() {
-            if (stateStore.pageLoading[0] === false) {
-            chart.hideLoading();
-            }
-          }, 1000)
-
-        }
+    return Highcharts.chart("container", {
+      exporting: {
+        enabled: false,
       },
-    },
-    title: {
-      text: "",
-    },
-    xAxis: {
-      categories: Array.from(responseDates),
-      // tickInterval : 5
-    },
-    yAxis: [
-      {
-        // Primary yAxis
-        title: {
-          text: "Requested Bids/Bids",
-          style: {
-            color: Highcharts.getOptions().colors[1],
+
+      chart: {
+        animation: false,
+        height: (4 / 16) * 100 + "%",
+        events: {
+          load() {
+            const chart = this;
+            chart.showLoading("Loading...");
+              if (stateStore.pageLoading[0] === false) {
+                chart.hideLoading();
+              }
           },
         },
       },
-      {
-        // Secondary yAxis
-        title: {
-          text: "Estimated Gross Revenue",
-          style: {
-            color: Highcharts.getOptions().colors[1],
+      title: {
+        text: "",
+      },
+      xAxis: {
+        categories: Array.from(responseDates),
+        // tickInterval : 5
+      },
+      yAxis: [
+        {
+          // Primary yAxis
+          title: {
+            text: "Requested Bids/Bids",
+            style: {
+              color: Highcharts.getOptions().colors[1],
+            },
           },
         },
-        labels: {
-          format: "${value}",
-          // formatter: function () {
-          //     return Highcharts.numberFormat(this.value, 0, "", ",");
-          //   },
-          
+        {
+          // Secondary yAxis
+          title: {
+            text: "Estimated Gross Revenue",
+            style: {
+              color: Highcharts.getOptions().colors[1],
+            },
+          },
+          labels: {
+            format: "${value}",
 
-          style: {
-            color: Highcharts.getOptions().colors[1],
+            style: {
+              color: Highcharts.getOptions().colors[1],
+            },
+          },
+          opposite: true,
+        },
+      ],
+      tooltip: {
+        shared: true,
+        valueDecimals: 2,
+      },
+      plotOptions: {
+        areaspline: {
+          fillOpacity: 0.7,
+        },
+      },
+      series: [
+        {
+          type: "column",
+          name: "Gross Revenue",
+          data: responseGrossRev,
+          color: "#7DC87E",
+          yAxis: 1,
+          dataLabels: {
+            formatter: function () {
+              return "$" + Utils.RoundNum(this.y);
+            },
+            enabled: true,
           },
         },
-        opposite: true,
-      },
-    ],
-    tooltip: {
-      shared: true,
-      valueDecimals: 2,
-    },
-    plotOptions: {
-      areaspline: {
-        fillOpacity: 0.7,
-      },
-    },
-    series: [
-      {
-        type: "column",
-        name: "Gross Revenue",
-        data: responseGrossRev,
-        color: "#7DC87E",
-        yAxis: 1,
-        dataLabels: {
-          formatter: function () {
-            return "$" + Utils.RoundNum(this.y);
+        {
+          type: "areaspline",
+          name: "Requested Bids",
+          color: "black",
+          opacity: 0.6,
+          data: responseReqBids,
+          marker: {
+            lineWidth: 1,
           },
-          enabled: true,
+          label: {
+            enabled: false,
+          },
         },
-      },
-      {
-        type: "areaspline",
-        name: "Requested Bids",
-        color: "black",
-        opacity: 0.6,
-        data: responseReqBids,
-        marker: {
-          lineWidth: 1,
+        {
+          type: "areaspline",
+          name: "Bids",
+          color: "#7DABC8",
+          data: responseBids,
+          marker: {
+            lineWidth: 1,
+          },
+          label: {
+            enabled: false,
+          },
         },
-        label: {
-          enabled: false,
-        },
-      },
-      {
-        type: "areaspline",
-        name: "Bids",
-        color: "#7DABC8",
-        data: responseBids,
-        marker: {
-          lineWidth: 1,
-        },
-        label: {
-          enabled: false,
-        },
-      },
-    ],
-  });
-}
-
-
-
-
-    
+      ],
+    });
+  }
 
   return (
     <Box m={2} style={{ marginTop: "-3px" }}>
       <Paper>
         <div>
           <div id="container"></div>
-          {/* {ready === false && <div className="overlay-spinner"><CircularProgress/></div>} */}
         </div>
       </Paper>
     </Box>

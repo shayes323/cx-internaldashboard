@@ -6,7 +6,6 @@ import {
   } from "@material-ui/core";
   import { observer } from "mobx-react-lite";
   import react, { useContext, useEffect } from "react";
-  import { StateService } from "../../../StateService";
   import { stateStoreContext } from "../../../StateStore";
   import { Utils } from "../../../Utils";
   import "../../Spinner.css";
@@ -34,6 +33,7 @@ import {
           );
   
     useEffect(() => {
+      console.log(estRevUrl);
       Utils.FetchTotal(estRevUrl)
         .then((total) => total.rtb_pub_revenue)
         .then((data) => (stateStore.confirmedRevenue = data))

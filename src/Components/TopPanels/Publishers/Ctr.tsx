@@ -14,11 +14,6 @@ import "../../Spinner.css";
 
 export const Ctr = observer<any, any>(() => {
   const stateStore = useContext(stateStoreContext);
-  const [change, setChange] = useState(false);
-
-  function RenderSpinner() {
-    return <CircularProgress />;
-  }
 
   const ctrUrl: string =
     stateStore.selectedPublisher === ""
@@ -40,15 +35,13 @@ export const Ctr = observer<any, any>(() => {
         );
 
   useEffect(
-    () =>
-      autorun(() => {
-        RenderSpinner();
+    () => {
         Utils.FetchTotal(ctrUrl)
           .then((total) => total.rtb_pub_ctr)
           .then((data) => (stateStore.ctr = data))
           .then(() => (stateStore.pubStatsFetching[6] = false))
           .then(() => console.log("api hit"));
-      }),
+      },
     [
       stateStore.start,
       stateStore.end,
@@ -56,14 +49,9 @@ export const Ctr = observer<any, any>(() => {
       stateStore.selectedPublisher,
       stateStore.pubStatsFetching,
     ]
-  );
+);
 
   return (
-    // <Paper style={{ height: "100%" }}>
-    //   <div className="panelTitle">CTR:</div>
-    //   <div className="panelInfo">{Utils.ToPercentage(stateStore.ctr)}</div>
-    // </Paper>
-
     <Paper style={{ height: "100%" }} >
       {toJS(stateStore.pubStatsFetching[6]) === false ? (
         <>

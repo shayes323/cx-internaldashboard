@@ -1,6 +1,3 @@
-import { TheatersRounded, ViewArrayOutlined } from "@material-ui/icons";
-import { isVariableDeclaration } from "typescript";
-import { Accumulate } from "./AccumulateData";
 import { StateService } from "./StateService";
 
 export class Utils {
@@ -21,7 +18,7 @@ export class Utils {
   }
 
   public static ToFullNum(num: number): string {
-    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+    return typeof(num) !== undefined  ? num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "";
   }
 
   public static ToPercentage(num: number): string | number {

@@ -3,6 +3,8 @@ import { findDOMNode } from 'react-dom';
 import OktaSignIn from '@okta/okta-signin-widget';
 import { useOktaAuth } from '@okta/okta-react';
 import { oktaSignInConfig } from './config';
+import { oktaAuthConfig } from '../authentication/okta.conf';
+
 
 
 
@@ -37,7 +39,7 @@ const Login = ({ setCorsErrorModalOpen, config}) => {
       }
   
     //   const { issuer, clientId, redirectUri, scopes, useInteractionCode } = config.oidc;
-      const widget = new OktaSignIn(config);
+      const widget = new OktaSignIn(oktaAuthConfig);
   
       widget.renderEl(
         { el: widgetRef.current },

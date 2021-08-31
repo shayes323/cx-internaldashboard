@@ -33,7 +33,7 @@ export const AvgBidEcpm = observer<any, any>(() => {
       .then((total) => total.rtb_rem_top_bids_price_avg)
       .then((data) => (stateStore.rfAvgBidEcpm = data))
       .then(() => stateStore.rfStatsFetching[3] = false);
-  });
+  }, [stateStore.start, stateStore.end, stateStore.selectedRemotefeed, stateStore.page]);
 
   return (
     <Paper style={{ height: "100%" }}>

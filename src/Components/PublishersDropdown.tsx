@@ -11,12 +11,12 @@ import {
 } from "@material-ui/core";
 import { runInAction, toJS } from "mobx";
 import { observer } from "mobx-react-lite";
-import { Accumulate } from "../AccumulateData";
 import { Utils } from "../Utils";
 
 export const PublishersDropDown: any = observer<any, any>(() => {
   const stateStore = useContext(stateStoreContext);
-  const [fieldVal, setFieldVal] = useState<string>("");
+  const [fieldVal, setFieldVal] = useState<string>("all");
+  console.log(fieldVal);
 
   var publishersUrl =
     stateStore.start != "" && stateStore.end != ""
@@ -43,21 +43,27 @@ export const PublishersDropDown: any = observer<any, any>(() => {
   }, [stateStore.start, stateStore.end]);
 
   function handleChange(e: any) {
-    if (e.target.value == "all") {
+    if (e.target.value === "all") {
       setFieldVal("all");
+      runInAction(() => stateStore.rfStatsFetching = [true, true, true, true, true, true]);
+      runInAction(() => stateStore.pageLoading = [true, true, true]);
       runInAction(() => (stateStore.selectedPublisher = ""));
+      runInAction(() => stateStore.selectedPublisherName = "all");
+      stateStore.setToLocalStorage(stateStore.selectedPubNameKey, "all");
       return;
     }
     e.preventDefault();
     const key = e.target.value;
-    console.log(e.target.value);
-    console.log(stateStore.publishersList[key]);
     setFieldVal(stateStore.publishersList[key]);
-
+    runInAction(() => stateStore.rfStatsFetching = [true, true, true, true, true, true]);
+    runInAction(() => stateStore.pageLoading = [true, true, true]);
     const pub = stateStore.publishersList[key];
+    runInAction(() => stateStore.selectedPublisherName = pub);
+    stateStore.setToLocalStorage(stateStore.selectedPubNameKey, stateStore.selectedPublisherName);
     const pubId = toJS(stateStore.publishersMap).get(pub);
-    console.log(pubId);
     runInAction(() => (stateStore.selectedPublisher = pubId));
+    console.log(stateStore.selectedPublisher)
+    stateStore.setToLocalStorage(stateStore.selectedPubKey, stateStore.selectedPublisher);
   }
 
   return (
@@ -67,12 +73,11 @@ export const PublishersDropDown: any = observer<any, any>(() => {
           height: "35px",
           width: "200px",
           backgroundColor: "white",
-          // marginLeft: "-30px",
           textAlign: "center",
         }}
         defaultValue={fieldVal}
         displayEmpty={true}
-        renderValue={() => (fieldVal != "" ? fieldVal : "all")}
+        renderValue={() => (stateStore.selectedPublisherName)}
         onChange={handleChange}
         variant="outlined"
       >

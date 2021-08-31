@@ -32,7 +32,7 @@ export const Coverage = observer<any, any>(() => {
       .then((total) => total.rtb_rem_coverage_rate)
       .then((data) => (stateStore.rfCoverage = data))
       .then(() => (stateStore.rfStatsFetching[4] = false));
-  });
+  }, [stateStore.start, stateStore.end, stateStore.selectedRemotefeed, stateStore.page]);
 
   return (
     <Paper style={{ height: "100%" }}>

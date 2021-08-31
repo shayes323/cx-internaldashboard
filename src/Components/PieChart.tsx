@@ -2,12 +2,10 @@ import { Box, CircularProgress, Paper } from "@material-ui/core";
 import { observer } from "mobx-react-lite";
 import Highcharts from "highcharts";
 import { useContext, useEffect, useRef, useState } from "react";
-import "./PieChart.css";
 import { Utils } from "../Utils";
 import { stateStoreContext } from "../StateStore";
 import { ChartData } from "../ChartData";
 import { toJS } from "mobx";
-import { CreateTrafficChart } from "./CreateChart";
 import { trace } from "mobx";
 import "./Spinner.css";
 
@@ -193,7 +191,6 @@ export const PieChart: any = observer<any, any>(() => {
               name: "Unknown",
               y: unknown / overall,
               // sliced: true,
-              selected: true,
             },
             {
               name: "Other",
@@ -257,7 +254,6 @@ export const PieChart: any = observer<any, any>(() => {
     });
   }
 
-
   function CreateTrafficChart(
     bannerCounts: number,
     videoCounts: number,
@@ -287,30 +283,13 @@ export const PieChart: any = observer<any, any>(() => {
         plotBackgroundColor: null,
         plotBorderWidth: null,
         plotShadow: false,
-        type: "pie"
+        type: "pie",
       },
       title: {
         text: "TRAFFIC BREAKDOWN",
       },
       tooltip: {
         pointFormat: "{series.name}: <b>{point.percentage:.1f}%</b>",
-
-        // formatOptions
-        // formatter: function () {
-        //   var custom = this.point.options as Custom;
-        //   var orig  = "{series.name}: <b>{point.percentage:.1f}%</b>" + "{point.bids}";
-        //   orig = orig +`${custom.bids}`;
-        //   orig = orig + `${custom.avgEcpm}`;
-        //   return orig;
-        // }
-        
-        //   "{series.name}: <b>{point.percentage:.1f}%</b>" + "{point.bids}",
-        // formatter: function() {
-        //     var orig = "{series.name}: <b>{point.percentage:.1f}%</b>";
-        //     orig + this.point.bids;
-        // return orig + this.point.avgEcpm;
-
-        // }
       },
       accessibility: {
         point: {
@@ -330,8 +309,6 @@ export const PieChart: any = observer<any, any>(() => {
       },
       series: [
         {
-     
-
           type: "pie",
           dataGrouping: { enabled: false },
           name: "Device Type",
@@ -340,39 +317,17 @@ export const PieChart: any = observer<any, any>(() => {
             {
               name: "Banner",
               y: bannerCounts / ovrCounts,
-              // bids: bannerBids,
-              // avgEcpm: bannerEcpm / ovrEcpm,
             },
             {
               name: "Video",
               y: videoCounts / ovrCounts,
-              // bids: videoBids,
-              // avgEcpm: videoEcpm / ovrEcpm,
             },
 
             {
               name: "Native",
               y: nativeCounts / ovrCounts,
-              // bids: nativeBids,
-              // avgEcpm: nativeEcpm / ovrEcpm,
             },
           ],
-
-          // {
-          //   name: "Banner Bids",
-          //   y: bannerBids / overallBids,
-          //   visible: false,
-          // },
-          // {
-          //   name: "Native Bids",
-          //   y: nativeBids / overallBids,
-          //   // visible: false,
-          // },
-          // {
-          //   name: "Video Bids",
-          //   y: videoBids / overallBids,
-          //   // visible: false
-          //,
         },
       ],
       responsive: {

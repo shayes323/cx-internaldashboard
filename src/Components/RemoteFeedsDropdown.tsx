@@ -11,12 +11,11 @@ import {
 } from "@material-ui/core";
 import { runInAction, toJS } from "mobx";
 import { observer } from "mobx-react-lite";
-import { Accumulate } from "../AccumulateData";
 import { Utils } from "../Utils";
 
 export const RemoteFeedsDropDown: any = observer<any, any>(() => {
   const stateStore = useContext(stateStoreContext);
-  const [fieldVal, setFieldVal] = useState<string>("");
+  const [fieldVal, setFieldVal] = useState<string>("all");
 
 
   var remotefeedsUrl =
@@ -47,6 +46,8 @@ export const RemoteFeedsDropDown: any = observer<any, any>(() => {
     if (e.target.value == "all") {
       setFieldVal("all");
       runInAction(() => (stateStore.selectedRemotefeed = ""));
+      runInAction(() => stateStore.pageLoading = [true, true, true]);
+      stateStore.setToLocalStorage(stateStore.selectedRFNameKey, "all");
       return;
     }
     e.preventDefault();
@@ -54,10 +55,15 @@ export const RemoteFeedsDropDown: any = observer<any, any>(() => {
     console.log(e.target.value);
     console.log(stateStore.remotefeedsList[key]);
     setFieldVal(stateStore.remotefeedsList[key]);
+    runInAction(() => stateStore.rfStatsFetching = [true, true, true, true, true, true, true, true]);
+    runInAction(() => stateStore.pageLoading = [true, true, true]);
+    const rf = stateStore.remotefeedsList[key];
+    runInAction(() => stateStore.selectedRemoteFeedName = rf);
+    stateStore.setToLocalStorage(stateStore.selectedRFNameKey, stateStore.selectedRemoteFeedName);
 
-    const pub = stateStore.remotefeedsList[key];
-    const pubId = toJS(stateStore.remotefeedsMap).get(pub);
-    runInAction(() => (stateStore.selectedRemotefeed = pubId));
+    const rfId = toJS(stateStore.remotefeedsMap).get(rf);
+    runInAction(() => (stateStore.selectedRemotefeed = rfId));
+    stateStore.setToLocalStorage(stateStore.selectedRFKey, stateStore.selectedRemotefeed);
   }
 
   return (
@@ -72,7 +78,7 @@ export const RemoteFeedsDropDown: any = observer<any, any>(() => {
         }}
         defaultValue={fieldVal}
         displayEmpty={true}
-        renderValue={() => (fieldVal != "" ? fieldVal : "all")}
+        renderValue={() => (fieldVal === "all" ? "all" : stateStore.selectedRemoteFeedName)}
         onChange={handleChange}
         variant="outlined"
       >

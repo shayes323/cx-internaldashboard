@@ -32,7 +32,7 @@ export const ConfirmedGrossRevenue = observer<any, any>(() => {
       .then((total) => total.rtb_pub_revenue)
       .then((data) => (stateStore.rfConfirmedGrossRevenue = data))
       .then(() => stateStore.rfStatsFetching[5] = false);
-  });
+  }, [stateStore.start, stateStore.end, stateStore.selectedRemotefeed, stateStore.page]);
 
   return (
     <Paper style={{ height: "100%" }}>

@@ -32,7 +32,7 @@ export const RequestedBids = observer<any, any>(() => {
       .then((total) => total.rtb_rem_imp_requests)
       .then((data) => (stateStore.rfRequestedBids = data))
       .then(() => (stateStore.rfStatsFetching[1] = false));
-  });
+  }, [stateStore.start, stateStore.end, stateStore.selectedRemotefeed, stateStore.page]);
 
   return (
     <Paper style={{ height: "100%" }}>

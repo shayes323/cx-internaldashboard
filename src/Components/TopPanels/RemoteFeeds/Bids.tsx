@@ -8,6 +8,9 @@ import { Utils } from "../../../Utils";
 export const Bids = observer<any, any>(() => {
   const stateStore = useContext(stateStoreContext);
 
+
+  console.log(stateStore.rfStatsFetching);
+
   const bidsUrl: string =
     stateStore.selectedRemotefeed === ""
       ? Utils.CreateUrl(
@@ -27,12 +30,15 @@ export const Bids = observer<any, any>(() => {
           "rtb_rem_imp_coverage"
         );
 
+    
+
   useEffect(() => {
+    console.log(bidsUrl);
     Utils.FetchTotal(bidsUrl)
       .then((total) => total.rtb_rem_imp_coverage)
       .then((data) => (stateStore.rfBids = data))
       .then(() => stateStore.rfStatsFetching[2] = false);
-  });
+  }, [stateStore.start, stateStore.end, stateStore.selectedRemotefeed, stateStore.page]);
 
   return (
     <Paper style={{ height: "100%" }}>

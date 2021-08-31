@@ -32,7 +32,7 @@ export const GrossRevenue = observer<any, any>(() => {
       .then((total) => total.rtb_rem_gross)
       .then((data) => (stateStore.rfGrossRevenue = data))
       .then(() => stateStore.rfStatsFetching[0] = false);
-  });
+  }, [stateStore.start, stateStore.end, stateStore.selectedRemotefeed, stateStore.page]);
 
   return (
     <Paper style={{ height: "100%" }}>

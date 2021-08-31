@@ -15,11 +15,17 @@ import "./App.css";
 import { PublishersContent, RemoteFeedsContent } from "./Organization/Content";
 import { Security, SecureRoute, LoginCallback } from "@okta/okta-react";
 import { toRelativeUrl, OktaAuth } from "@okta/okta-auth-js";
-import { oktaAuthConfig, oktaSignInConfig } from "./Components/auth/config";
-import Login from "./Components/auth/Login";
-import history from "./Components/history";
+import { oktaAuthConfig, oktaSignInConfig } from "./auth/config";
+import Login from "./auth/Login";
 
 export const App: any = observer<any, any>(() => {
+
+
+
+  window.onbeforeunload = function() {
+  localStorage.clear();
+  };
+
   const stateStore = useContext(stateStoreContext);
   // let history = useHistory<string>();
 
@@ -31,7 +37,11 @@ export const App: any = observer<any, any>(() => {
   // const restoreOriginalUri = async (_oktaAuth, originalUri) => {
   //   history.replace(toRelativeUrl(originalUri, window.location.origin));
   // };
-  console.log(history);
+
+  // const restoreOriginalUri = async (_oktaAuth: OktaAuth, originalUri: string) => {
+  //   history.replace(toRelativeUrl(originalUri || '/', window.location.origin));
+  // };
+  // console.log(history);
 
   return (
     <Router>
@@ -41,11 +51,11 @@ export const App: any = observer<any, any>(() => {
         onAuthRequired={onAuthRequired}
       > */}
         <Switch>
-          <Box style={{ minHeight: "110vh" }} className="page">
+          <Box className="page">
             {/* <Route exact path="/">
               <Redirect exact from="/" to="/login" />
-            </Route>
-            <Route
+            </Route> */}
+            {/* <Route
               path="/login"
               render={() => <Login config={oktaSignInConfig} />}
             />
@@ -56,7 +66,6 @@ export const App: any = observer<any, any>(() => {
             <Route exact path = "/">
               <Redirect exact from="/" to="/publishers"/>
             </Route>
-              
               <Route exact path="/publishers">
               <NavBar />
                 <PublishersContent />
@@ -68,8 +77,9 @@ export const App: any = observer<any, any>(() => {
             {/* </div> */}
           </Box>
         </Switch>
+        {/* </Security> */}
+
         </Router>
 
-      // {/* </Security> */}
   );
 });

@@ -113,31 +113,6 @@ export const ZoneFeedData = observer<any, any>(() => {
           }}
         >
           <Paper>
-            {/* {ready === false && <div className="overlay-spinner"></div>} */}
-            {/* {ready === false ? <> <div className="overlay-spinner"><CircularProgress/></div> <MaterialTable
-        style={{whiteSpace: "nowrap"}}
-          icons={tableIcons}
-          title="Zone/Feed Data"
-          options={{
-            sorting: true,
-            search: true,
-            paging: false,
-            maxBodyHeight: 300,
-            minBodyHeight: 300
-          }}
-          columns={[
-            { field: "zoneFeed", title: "Zone/Feed", width: 70, align: "left"},
-            { field: "revenue", title: "Revenue", width: 70, align: "left", defaultSort: "desc"},
-            { field: "requests", title: "Requests", width: 70, align: "left" },
-            { field: "impressions", title: "Impressions", width: 70, align: "left"},
-            { field: "fillRate", title: "Fill Rate", width: 70, align: "left"},
-            { field: "eCpm", title: "Ecpm", width: 70, align: "left"},
-          ]}
-          data={[]}
-         */}
-
-            {/* /></>: */}
-
             <MaterialTable
               style={{ whiteSpace: "nowrap" }}
               icons={tableIcons}
@@ -160,7 +135,7 @@ export const ZoneFeedData = observer<any, any>(() => {
                   field: "revenue",
                   title: "Estimated Pub Revenue",
                   width: 70,
-                  align: "left",
+                  align: "center",
                   defaultSort: "desc",
                 },
                 {

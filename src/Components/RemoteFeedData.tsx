@@ -1,10 +1,5 @@
 import { observer } from "mobx-react-lite";
-import {
-  DataGrid,
-  GridColDef,
-  GridRowModel,
-  GridRowsProp,
-} from "@material-ui/data-grid";
+
 import { useContext, useEffect, useState } from "react";
 import { StateService } from "../StateService";
 import { stateStoreContext } from "../StateStore";
@@ -17,7 +12,6 @@ import {
   Box,
   CircularProgress,
   Paper,
-  responsiveFontSizes,
 } from "@material-ui/core";
 import { Height, InfoRounded } from "@material-ui/icons";
 import { toJS } from "mobx";
@@ -151,7 +145,7 @@ export const RemoteFeedData = observer<any, any>(() => {
                   field: "grossRevenue",
                   title: "Estimated Gross Revenue",
                   width: 70,
-                  align: "left",
+                  align: "center",
                   defaultSort: "desc"
                 },
                 {
@@ -165,7 +159,7 @@ export const RemoteFeedData = observer<any, any>(() => {
                   field: "avgBidEcpm",
                   title: "Average Bid ECPM",
                   width: 70,
-                  align: "left",
+                  align: "center",
                 },
                 {
                   field: "coverage",
